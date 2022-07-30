@@ -38,7 +38,7 @@ class RealmManager: ObservableObject {
   
   func getTasks() {
     if let localRealm = localRealm {
-      let sortProperties = [SortDescriptor(keyPath: "completed", ascending: true), SortDescriptor(keyPath: "date", ascending: true), SortDescriptor(keyPath: "time", ascending: true)]
+      let sortProperties = [SortDescriptor(keyPath: "completed", ascending: false), SortDescriptor(keyPath: "date", ascending: true), SortDescriptor(keyPath: "time", ascending: true)]
       let allTasks = localRealm.objects(Task.self).sorted(by: sortProperties)
       tasks = []
       allTasks.forEach { task in

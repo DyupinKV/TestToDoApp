@@ -40,7 +40,7 @@ class ToDoViewController: UIViewController {
   }
   
   func setupTasksCollectionView () {
-    taskCollectionView = UICollectionView( frame: categoriesCollectionView.frame, collectionViewLayout: createTasksListLayout())
+    taskCollectionView = UICollectionView( frame: .zero, collectionViewLayout: createTasksListLayout())
     taskCollectionView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
     
     taskCollectionView.register(SectionHeader.self,

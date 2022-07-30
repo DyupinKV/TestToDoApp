@@ -42,7 +42,7 @@ class TaskCell:UICollectionViewCell {
     timeLabel.text = task.time
     dateLabel.text = task.date
     
-    let backgroundColor = task.completed ? #colorLiteral(red: 0.9647058845, green: 0.9647058845, blue: 0.9647058845, alpha: 1) : #colorLiteral(red: 0.4722054005, green: 0.7610591054, blue: 0.7004293799, alpha: 1)
+    let backgroundColor = task.completed ? #colorLiteral(red: 0.4722054005, green: 0.7610591054, blue: 0.7004293799, alpha: 1) : #colorLiteral(red: 0.9647058845, green: 0.9647058845, blue: 0.9647058845, alpha: 1)
     self.backgroundColor = backgroundColor
   }
   
