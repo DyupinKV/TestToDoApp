@@ -7,10 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		41395E6328998EAA00591BB1 /* RealmDB.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41395E6228998EAA00591BB1 /* RealmDB.swift */; };
 		413F711728704636006144A3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 413F711628704636006144A3 /* AppDelegate.swift */; };
 		413F711928704637006144A3 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 413F711828704637006144A3 /* SceneDelegate.swift */; };
-		413F711B28704637006144A3 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 413F711A28704637006144A3 /* MainViewController.swift */; };
 		413F711E28704637006144A3 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 413F711C28704637006144A3 /* Main.storyboard */; };
 		413F712028704638006144A3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 413F711F28704638006144A3 /* Assets.xcassets */; };
 		413F712328704638006144A3 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 413F712128704638006144A3 /* LaunchScreen.storyboard */; };
@@ -47,11 +45,9 @@
 
 /* Begin PBXFileReference section */
 		07F18FE2FA007A844564B2FE /* Pods-TestToDoApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TestToDoApp.debug.xcconfig"; path = "Target Support Files/Pods-TestToDoApp/Pods-TestToDoApp.debug.xcconfig"; sourceTree = "<group>"; };
-		41395E6228998EAA00591BB1 /* RealmDB.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmDB.swift; sourceTree = "<group>"; };
 		413F711328704636006144A3 /* TestToDoApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TestToDoApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		413F711628704636006144A3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		413F711828704637006144A3 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		413F711A28704637006144A3 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		413F711D28704637006144A3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		413F711F28704638006144A3 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		413F712228704638006144A3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -140,7 +136,6 @@
 			isa = PBXGroup;
 			children = (
 				41F4BE3628870E94000E3A13 /* CreateNewTask */,
-				41F4BE3528870E81000E3A13 /* Main */,
 				41F4BE3428870E61000E3A13 /* Tasks */,
 			);
 			path = Views;
@@ -160,7 +155,6 @@
 				413F71522874A599006144A3 /* Extensions.swift */,
 				413F7159287600CF006144A3 /* RealmManager.swift */,
 				413F71692880853E006144A3 /* GradientView.swift */,
-				41395E6228998EAA00591BB1 /* RealmDB.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -181,14 +175,6 @@
 				413F714D28749F9A006144A3 /* ToDoViewController.swift */,
 			);
 			path = Tasks;
-			sourceTree = "<group>";
-		};
-		41F4BE3528870E81000E3A13 /* Main */ = {
-			isa = PBXGroup;
-			children = (
-				413F711A28704637006144A3 /* MainViewController.swift */,
-			);
-			path = Main;
 			sourceTree = "<group>";
 		};
 		41F4BE3628870E94000E3A13 /* CreateNewTask */ = {
@@ -404,14 +390,12 @@
 				416C12B728898B6C00A1CA3F /* ToDoViewModel.swift in Sources */,
 				413F714E28749F9A006144A3 /* ToDoViewController.swift in Sources */,
 				413F715A287600CF006144A3 /* RealmManager.swift in Sources */,
-				413F711B28704637006144A3 /* MainViewController.swift in Sources */,
 				413F71532874A599006144A3 /* Extensions.swift in Sources */,
 				413F7168287F2A79006144A3 /* TaskCell.swift in Sources */,
 				413F711728704636006144A3 /* AppDelegate.swift in Sources */,
 				413F7161287CA0D5006144A3 /* Categories.swift in Sources */,
 				413F715D28760126006144A3 /* Task.swift in Sources */,
 				413F716E2880915A006144A3 /* SectionHeader.swift in Sources */,
-				41395E6328998EAA00591BB1 /* RealmDB.swift in Sources */,
 				413F716A2880853E006144A3 /* GradientView.swift in Sources */,
 				413F715F287759BA006144A3 /* CreateNewTaskViewController.swift in Sources */,
 				413F711928704637006144A3 /* SceneDelegate.swift in Sources */,
