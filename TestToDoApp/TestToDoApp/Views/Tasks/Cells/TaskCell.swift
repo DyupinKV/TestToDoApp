@@ -19,7 +19,7 @@ class TaskCell:UICollectionViewCell {
   }()
   
   private lazy var checked = UIImage(named: "Checkmark")
-
+  
   
   
   override init(frame: CGRect) {
@@ -40,7 +40,7 @@ class TaskCell:UICollectionViewCell {
     dateLabel.translatesAutoresizingMaskIntoConstraints = false
     gradientView.translatesAutoresizingMaskIntoConstraints = false
     completeImgView.translatesAutoresizingMaskIntoConstraints = false
-
+    
     categoryName.textColor = #colorLiteral(red: 0.4965081215, green: 0.5498962402, blue: 0.596957624, alpha: 1)
   }
   
@@ -48,12 +48,18 @@ class TaskCell:UICollectionViewCell {
     guard let category = Categories(rawValue: task.category)  else {return}
     let startColor = pickCategoryStartColor(category: category)
     let endColor = pickCategoryEndColor(category: category)
+    let dateFormatter = DateFormatter()
+    dateFormatter.dateFormat = "dd.MM.yyyy"
+    let date = dateFormatter.string(from: task.date)
+    dateFormatter.dateFormat = "HH:MM"
+    let time = dateFormatter.string(from: task.date)
+    
     
     gradientView.setupGradientColors(startColor: startColor, endColor: endColor)
     taskTitle.text = task.title
     categoryName.text = task.category
-    timeLabel.text = task.time
-    dateLabel.text = task.date
+    timeLabel.text = time
+    dateLabel.text = date
     
     let completedImg = task.completed ? checked : .none
     completeImgView.image = completedImg

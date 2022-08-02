@@ -1,8 +1,6 @@
 import UIKit
 
-class ToDoViewController: UIViewController {
-  private lazy var realmManager = RealmManager()
-  
+class ToDoViewController: UIViewController {  
   private var taskCollectionView: UICollectionView!
   private var categoriesCollectionView: UICollectionView!
   
@@ -251,8 +249,8 @@ extension ToDoViewController: ToDoViewModelDelegate {
     showAllBtn.isHidden = vm.pickedCategory != "" ? false : true
     
     for cell in categoriesCollectionView.visibleCells {
-        cell.backgroundColor =  #colorLiteral(red: 0.9647058845, green: 0.9647058845, blue: 0.9647058845, alpha: 1)
-      }
+      cell.backgroundColor =  #colorLiteral(red: 0.9647058845, green: 0.9647058845, blue: 0.9647058845, alpha: 1)
+    }
   }
   
   func updatedInfo() {

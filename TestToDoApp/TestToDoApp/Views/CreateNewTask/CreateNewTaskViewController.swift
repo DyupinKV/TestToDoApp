@@ -124,12 +124,7 @@ class CreateNewTaskViewController: UIViewController {
   }
   
   private func createTask(_ title: String, _ category: String) {
-    let dateFormatter = DateFormatter()
-    dateFormatter.dateFormat = "dd.MM.yyyy"
-    let date = dateFormatter.string(from: datePicker.date)
-    dateFormatter.dateFormat = "HH:MM"
-    let time = dateFormatter.string(from: datePicker.date)
-    realmManager.addTask(taskTitle: title, taskTime: time, taskDate: date, category: category)
+    realmManager.addTask(taskTitle: title, category: category, date: datePicker.date)
     
     let toDoVC = ToDoViewController()
     navigationController?.pushViewController(toDoVC, animated: true)
@@ -163,7 +158,7 @@ class CreateNewTaskViewController: UIViewController {
   @objc private func acceptCategoriesPicker() {
     let selectedValue = Categories.allCases[categoriesPickerView.selectedRow(inComponent: 0)].rawValue
     categoriesTextView.layer.borderColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
-
+    
     categoriesTextView.text = selectedValue
     view.endEditing(true)
   }
