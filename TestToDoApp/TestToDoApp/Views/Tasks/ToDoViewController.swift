@@ -10,6 +10,19 @@ class ToDoViewController: UIViewController {
   private lazy var tasks:[Task] = []
   private lazy var categories:[String] = vm.categories
   
+  private lazy var showAllBtn: UIButton = {
+    let showAllBtn = UIButton(type: .system)
+    
+    showAllBtn.backgroundColor = .blue
+    showAllBtn.setTitle("Show all", for: .normal)
+    showAllBtn.setTitleColor(.white, for: .normal)
+    showAllBtn.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
+    showAllBtn.layer.cornerRadius = 5
+    showAllBtn.addTarget(self, action: #selector(didTapShowAllBtn), for: .touchUpInside)
+    
+    return showAllBtn
+  }()
+  
   override func viewDidLoad() {
     super.viewDidLoad()
     
@@ -18,6 +31,7 @@ class ToDoViewController: UIViewController {
     vm.getData()
     setupCategoriesCollectionView()
     setupTasksCollectionView()
+    setupShowAllBtn()
   }
   
   private func setupViews() {
@@ -29,7 +43,6 @@ class ToDoViewController: UIViewController {
                                            bgСolor: UIColor(rgb: 0x30D33B),
                                            selector: #selector(didTapAddTaskButton),
                                            width: 60)
-    
     let menuBarItem = UIBarButtonItem(customView: addTaskButton)
     
     navigationItem.rightBarButtonItem = menuBarItem
@@ -37,6 +50,17 @@ class ToDoViewController: UIViewController {
     
     let view = UIView()
     view.backgroundColor = .white
+  }
+  
+  private func setupShowAllBtn() {
+    view.addSubview(showAllBtn)
+    showAllBtn.translatesAutoresizingMaskIntoConstraints = false
+    
+    showAllBtn.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -36).isActive = true
+    showAllBtn.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -32).isActive = true
+    showAllBtn.widthAnchor.constraint(equalToConstant: 100).isActive = true
+    
+    showAllBtn.isHidden = true
   }
   
   func setupTasksCollectionView () {
@@ -136,6 +160,10 @@ class ToDoViewController: UIViewController {
     let createNewTaskVC = CreateNewTaskViewController()
     navigationController?.pushViewController(createNewTaskVC, animated: true)
   }
+  
+  @objc func didTapShowAllBtn() {
+    vm.showAllTasks()
+  }
 }
 
 extension ToDoViewController: UICollectionViewDataSource {
@@ -183,7 +211,7 @@ extension ToDoViewController: UICollectionViewDelegate {
       let selectedCell = collectionView.cellForItem(at: indexPath)
       let cellColor = unselectCategory ? #colorLiteral(red: 0.9647058845, green: 0.9647058845, blue: 0.9647058845, alpha: 1) : .green
       
-      selectedCell?.backgroundColor =  cellColor
+      selectedCell?.backgroundColor = cellColor
       
     default:
       let task = tasks[indexPath.row]
@@ -219,6 +247,14 @@ extension ToDoViewController: UICollectionViewDelegateFlowLayout {
 }
 
 extension ToDoViewController: ToDoViewModelDelegate {
+  func updatedPickedCategory() {
+    showAllBtn.isHidden = vm.pickedCategory != "" ? false : true
+    
+    for cell in categoriesCollectionView.visibleCells {
+        cell.backgroundColor =  #colorLiteral(red: 0.9647058845, green: 0.9647058845, blue: 0.9647058845, alpha: 1)
+      }
+  }
+  
   func updatedInfo() {
     DispatchQueue.main.async { [self] in
       self.tasks = vm.data

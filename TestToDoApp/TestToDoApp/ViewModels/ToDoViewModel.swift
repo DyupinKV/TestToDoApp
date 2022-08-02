@@ -1,14 +1,18 @@
 import Foundation
-//import RealmSwift
 import RealmSwift
 
 protocol ToDoViewModelDelegate: AnyObject {
   func updatedInfo()
+  func updatedPickedCategory()
 }
 
 class ToDoViewModel {
   private lazy var realmManager = RealmManager()
-  private lazy var pickedCategory = ""
+  lazy var pickedCategory = "" {
+    didSet {
+      delegate?.updatedPickedCategory()
+    }
+  }
   lazy var categories = Categories.allCases.map { $0.rawValue }
   
   weak var delegate: ToDoViewModelDelegate?
@@ -25,8 +29,7 @@ class ToDoViewModel {
   
   func tapCategory(category: String) -> Bool {
     if (pickedCategory == category) {
-      pickedCategory = ""
-      getData()
+      showAllTasks()
       
       return true
     } else {
@@ -40,6 +43,11 @@ class ToDoViewModel {
   
   func tapTaskForComplete(taskID: ObjectId, newCompletedStatus: Bool) {
     realmManager.updateTask(id: taskID, completed: newCompletedStatus)
+    getData()
+  }
+  
+  func showAllTasks() {
+    pickedCategory = ""
     getData()
   }
 }

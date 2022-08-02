@@ -9,6 +9,18 @@ class TaskCell:UICollectionViewCell {
   let categoryName = UILabel()
   let timeLabel = UILabel()
   let dateLabel = UILabel()
+  let completeImgView: UIImageView = {
+    let completeImgView:UIImageView = UIImageView()
+    completeImgView.contentMode = UIView.ContentMode.scaleAspectFit
+    completeImgView.frame.size.width = 30
+    completeImgView.frame.size.height = 30
+    
+    return completeImgView
+  }()
+  
+  private lazy var checked = UIImage(named: "Checkmark")
+
+  
   
   override init(frame: CGRect) {
     super.init(frame: frame)
@@ -27,7 +39,8 @@ class TaskCell:UICollectionViewCell {
     timeLabel.translatesAutoresizingMaskIntoConstraints = false
     dateLabel.translatesAutoresizingMaskIntoConstraints = false
     gradientView.translatesAutoresizingMaskIntoConstraints = false
-    
+    completeImgView.translatesAutoresizingMaskIntoConstraints = false
+
     categoryName.textColor = #colorLiteral(red: 0.4965081215, green: 0.5498962402, blue: 0.596957624, alpha: 1)
   }
   
@@ -42,8 +55,8 @@ class TaskCell:UICollectionViewCell {
     timeLabel.text = task.time
     dateLabel.text = task.date
     
-    let backgroundColor = task.completed ? #colorLiteral(red: 0.4722054005, green: 0.7610591054, blue: 0.7004293799, alpha: 1) : #colorLiteral(red: 0.9647058845, green: 0.9647058845, blue: 0.9647058845, alpha: 1)
-    self.backgroundColor = backgroundColor
+    let completedImg = task.completed ? checked : .none
+    completeImgView.image = completedImg
   }
   
   required init?(coder: NSCoder) {
@@ -58,22 +71,29 @@ extension TaskCell {
     addSubview(categoryName)
     addSubview(dateLabel)
     addSubview(timeLabel)
+    addSubview(completeImgView)
+    
+    let smallOffset = CGFloat(8)
+    let largeOffset = CGFloat(16)
     
     gradientView.trailingAnchor.constraint(equalTo: self.trailingAnchor).isActive = true
     gradientView.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
-    gradientView.widthAnchor.constraint(equalToConstant: 8).isActive = true
+    gradientView.widthAnchor.constraint(equalToConstant: smallOffset).isActive = true
     gradientView.heightAnchor.constraint(equalTo: self.heightAnchor).isActive = true
     
-    taskTitle.topAnchor.constraint(equalTo: topAnchor, constant: 16).isActive = true
-    taskTitle.leadingAnchor.constraint(equalTo: dateLabel.trailingAnchor, constant: 16).isActive = true
+    taskTitle.topAnchor.constraint(equalTo: topAnchor, constant: largeOffset).isActive = true
+    taskTitle.leadingAnchor.constraint(equalTo: dateLabel.trailingAnchor, constant: largeOffset).isActive = true
     
-    categoryName.topAnchor.constraint(equalTo: taskTitle.bottomAnchor, constant: 8).isActive = true
+    categoryName.topAnchor.constraint(equalTo: taskTitle.bottomAnchor, constant: smallOffset).isActive = true
     categoryName.leadingAnchor.constraint(equalTo: taskTitle.leadingAnchor).isActive = true
     
-    timeLabel.topAnchor.constraint(equalTo: topAnchor, constant: 16).isActive = true
-    timeLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 16).isActive = true
+    timeLabel.topAnchor.constraint(equalTo: topAnchor, constant: largeOffset).isActive = true
+    timeLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: largeOffset).isActive = true
     
-    dateLabel.topAnchor.constraint(equalTo: timeLabel.bottomAnchor, constant: 8).isActive = true
-    dateLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 16).isActive = true
+    dateLabel.topAnchor.constraint(equalTo: timeLabel.bottomAnchor, constant: smallOffset).isActive = true
+    dateLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: largeOffset).isActive = true
+    
+    completeImgView.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
+    completeImgView.trailingAnchor.constraint(equalTo: gradientView.leadingAnchor, constant: -largeOffset).isActive = true
   }
 }

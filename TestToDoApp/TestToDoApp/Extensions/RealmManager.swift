@@ -38,7 +38,7 @@ class RealmManager: ObservableObject {
   
   func getTasks() {
     if let localRealm = localRealm {
-      let sortProperties = [SortDescriptor(keyPath: "completed", ascending: false), SortDescriptor(keyPath: "date", ascending: true), SortDescriptor(keyPath: "time", ascending: true)]
+      let sortProperties = [SortDescriptor(keyPath: "date", ascending: true), SortDescriptor(keyPath: "time", ascending: true)]
       let allTasks = localRealm.objects(Task.self).sorted(by: sortProperties)
       tasks = []
       allTasks.forEach { task in
@@ -55,7 +55,7 @@ class RealmManager: ObservableObject {
         
         try localRealm.write {
           taskToUpdate[0].completed = completed
-          getTasks()
+//          getTasks()
           print("Updating task with id \(id), complete status \(completed)")
         }
       } catch {

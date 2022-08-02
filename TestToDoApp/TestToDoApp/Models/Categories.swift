@@ -14,7 +14,7 @@ func pickCategoryStartColor(category: Categories)-> UIColor {
   case .Personal:
     return #colorLiteral(red: 0.4513868093, green: 0.9930960536, blue: 1, alpha: 1)
   case .Shopping:
-    return #colorLiteral(red: 0.9995340705, green: 0.988355577, blue: 0.4726552367, alpha: 1)
+    return #colorLiteral(red: 0.9998531938, green: 0, blue: 0.1240663752, alpha: 1)
   case .Sport:
     return #colorLiteral(red: 0.476841867, green: 0.5048075914, blue: 1, alpha: 1)
   case .Event:
@@ -29,7 +29,7 @@ func pickCategoryEndColor(category: Categories)-> UIColor {
   case .Personal:
     return #colorLiteral(red: 0, green: 0.9810667634, blue: 0.5736914277, alpha: 1)
   case .Shopping:
-    return #colorLiteral(red: 0.5563425422, green: 0.9793455005, blue: 0, alpha: 1)
+    return #colorLiteral(red: 1, green: 0.5409764051, blue: 0.8473142982, alpha: 1)
   case .Sport:
     return #colorLiteral(red: 0.01680417731, green: 0.1983509958, blue: 1, alpha: 1)
   case .Event:

@@ -1,8 +1,7 @@
 import Foundation
-//import RealmSwift
 import RealmSwift
 
-class Task: Object, ObjectKeyIdentifiable {
+final class Task: Object, ObjectKeyIdentifiable {
   @Persisted(primaryKey: true) var id: ObjectId
   @Persisted var title = ""
   @Persisted var time = ""

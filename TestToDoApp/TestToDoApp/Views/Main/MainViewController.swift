@@ -5,14 +5,14 @@ class MainViewController: UIViewController {
                                                                 bgСolor: UIColor(rgb: 0x0A60FF),
                                                                 selector: #selector(didTapToDoList))
   
-  private lazy var categoriesListButton:UIButton = createCustomButton(title: "ToDo categories list",
-                                                                      bgСolor: UIColor(rgb: 0xF090D4),
-                                                                      selector: #selector(didTapToDoCategoriesList))
-  
-  private lazy var imagesListButton:UIButton = createCustomButton(title: "Images list",
-                                                                  bgСolor: UIColor(rgb: 0xAA83E5),
-                                                                  selector: #selector(didTapImagesList))
-  
+//  private lazy var categoriesListButton:UIButton = createCustomButton(title: "ToDo categories list",
+//                                                                      bgСolor: UIColor(rgb: 0xF090D4),
+//                                                                      selector: #selector(didTapToDoCategoriesList))
+//
+//  private lazy var imagesListButton:UIButton = createCustomButton(title: "Images list",
+//                                                                  bgСolor: UIColor(rgb: 0xAA83E5),
+//                                                                  selector: #selector(didTapImagesList))
+//
   private var viewModel: MainViewController!
   
   override func viewDidLoad() {
@@ -31,8 +31,8 @@ class MainViewController: UIViewController {
     stackView.alignment = UIStackView.Alignment.center
     stackView.spacing = 16.0
     stackView.addArrangedSubview(toDoListButton)
-    stackView.addArrangedSubview(categoriesListButton)
-    stackView.addArrangedSubview(imagesListButton)
+//    stackView.addArrangedSubview(categoriesListButton)
+//    stackView.addArrangedSubview(imagesListButton)
     
     stackView.translatesAutoresizingMaskIntoConstraints = false
     
@@ -47,13 +47,13 @@ class MainViewController: UIViewController {
     navigationController?.pushViewController(toDoVC, animated: true)
   }
   
-  @objc func didTapToDoCategoriesList() {
-    let toDoCategoriesVC = ToDoCategoriesViewController()
-    navigationController?.pushViewController(toDoCategoriesVC, animated: true)
-  }
-  
-  @objc private func didTapImagesList() {
-    let imagesVC = ImagesViewController()
-    navigationController?.pushViewController(imagesVC, animated: true)
-  }
+//  @objc func didTapToDoCategoriesList() {
+//    let toDoCategoriesVC = ToDoCategoriesViewController()
+//    navigationController?.pushViewController(toDoCategoriesVC, animated: true)
+//  }
+//
+//  @objc private func didTapImagesList() {
+//    let imagesVC = ImagesViewController()
+//    navigationController?.pushViewController(imagesVC, animated: true)
+//  }
 }

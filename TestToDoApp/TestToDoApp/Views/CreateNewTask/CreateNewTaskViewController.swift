@@ -12,13 +12,12 @@ class CreateNewTaskViewController: UIViewController {
   
   private var titleInput: UITextField = {
     let titleInput = UITextField()
-    let padding = CGFloat(10)
     
     titleInput.placeholder = "Enter task name"
     titleInput.font = UIFont.systemFont(ofSize: 16)
     titleInput.layer.borderWidth = 1
     titleInput.layer.cornerRadius = 5
-    titleInput.setPadding(left: padding, right:  padding)
+    titleInput.textAlignment = .center
     
     return titleInput
   }()
@@ -42,13 +41,12 @@ class CreateNewTaskViewController: UIViewController {
   
   private let categoriesTextView: UITextField = {
     let categoriesTextView = UITextField()
-    let padding = CGFloat(10)
     
     categoriesTextView.placeholder = "Choose category"
     categoriesTextView.font = UIFont.systemFont(ofSize: 20)
     categoriesTextView.layer.borderWidth = 1
     categoriesTextView.layer.cornerRadius = 5
-    categoriesTextView.setPadding(left: padding, right: padding)
+    categoriesTextView.textAlignment = .center
     
     return categoriesTextView
   }()
@@ -96,32 +94,45 @@ class CreateNewTaskViewController: UIViewController {
   private func addConstraints() {
     view.addSubview(stackView)
     
+    let offset = CGFloat(40)
+    
     stackView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
     stackView.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
-    stackView.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -40).isActive = true
+    stackView.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -offset).isActive = true
     
-    titleInput.heightAnchor.constraint(equalToConstant: 40).isActive = true
-    titleInput.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -40).isActive = true
+    titleInput.heightAnchor.constraint(equalToConstant: offset).isActive = true
+    titleInput.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -offset).isActive = true
     
-    categoriesTextView.heightAnchor.constraint(equalToConstant: 40).isActive = true
-    categoriesTextView.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -40).isActive = true
+    categoriesTextView.heightAnchor.constraint(equalToConstant: offset).isActive = true
+    categoriesTextView.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -offset).isActive = true
   }
   
   @objc func didTapCreateButton() {
     let title:String = titleInput.text ?? ""
     let category:String = categoriesTextView.text ?? ""
     
-    if (title != "" && category != "") {
-      let dateFormatter = DateFormatter()
-      dateFormatter.dateFormat = "dd.MM.yyyy"
-      let date = dateFormatter.string(from: datePicker.date)
-      dateFormatter.dateFormat = "HH:MM"
-      let time = dateFormatter.string(from: datePicker.date)
-      realmManager.addTask(taskTitle: title, taskTime: time, taskDate: date, category: category)
-      
-      let toDoVC = ToDoViewController()
-      navigationController?.pushViewController(toDoVC, animated: true)
+    switch (title, category) {
+    case ("", _):
+      titleInput.layer.borderColor = #colorLiteral(red: 1, green: 0.1491314173, blue: 0, alpha: 1)
+      categoriesTextView.layer.borderColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
+    case (_, "") :
+      categoriesTextView.layer.borderColor = #colorLiteral(red: 1, green: 0.1491314173, blue: 0, alpha: 1)
+      titleInput.layer.borderColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
+    default:
+      createTask(title, category)
     }
+  }
+  
+  private func createTask(_ title: String, _ category: String) {
+    let dateFormatter = DateFormatter()
+    dateFormatter.dateFormat = "dd.MM.yyyy"
+    let date = dateFormatter.string(from: datePicker.date)
+    dateFormatter.dateFormat = "HH:MM"
+    let time = dateFormatter.string(from: datePicker.date)
+    realmManager.addTask(taskTitle: title, taskTime: time, taskDate: date, category: category)
+    
+    let toDoVC = ToDoViewController()
+    navigationController?.pushViewController(toDoVC, animated: true)
   }
   
   private func addCategoriesPickerView() {
@@ -129,6 +140,32 @@ class CreateNewTaskViewController: UIViewController {
     
     categoriesPickerView.delegate = self
     categoriesPickerView.dataSource = self
+    
+    dismissPickerView()
+  }
+  
+  private func dismissPickerView() {
+    let toolBar = UIToolbar()
+    toolBar.sizeToFit()
+    let close = UIBarButtonItem(title: "Close", style: .plain, target: self, action: #selector(self.closeCategoriesPicker))
+    let accept = UIBarButtonItem(title: "Accept", style: .plain, target: self, action: #selector(self.acceptCategoriesPicker))
+    let space = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+    
+    toolBar.setItems([close, space, accept], animated: true)
+    toolBar.isUserInteractionEnabled = true
+    categoriesTextView.inputAccessoryView = toolBar
+  }
+  
+  @objc private func closeCategoriesPicker() {
+    view.endEditing(true)
+  }
+  
+  @objc private func acceptCategoriesPicker() {
+    let selectedValue = Categories.allCases[categoriesPickerView.selectedRow(inComponent: 0)].rawValue
+    categoriesTextView.layer.borderColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
+
+    categoriesTextView.text = selectedValue
+    view.endEditing(true)
   }
 }
 
@@ -145,11 +182,6 @@ extension CreateNewTaskViewController: UIPickerViewDataSource {
   
   func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
     return Categories.allCases.count
-  }
-  
-  func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-    categoriesTextView.text = Categories.allCases[row].rawValue
-    self.view.endEditing(true)
   }
 }
 
