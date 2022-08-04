@@ -1,13 +1,11 @@
 import Foundation
 import RealmSwift
 
-class RealmManager: ObservableObject {
+class RealmManager <T: RealmSwift.Object> {
   private(set) var localRealm: Realm?
-  @Published private(set) var tasks: [Task] = []
   
   init() {
     openRealm()
-    getTasks()
   }
   
   func openRealm () {
@@ -21,32 +19,30 @@ class RealmManager: ObservableObject {
     }
   }
   
-  func addTask(taskTitle: String, category: String, date: Date) {
+  func add(obj: T) {
     if let localRealm = localRealm {
       do {
         try localRealm.write {
-          let newTask = Task(value: ["title": taskTitle, "category": category, "date": date, "completed": false])
-          localRealm.add(newTask)
-          getTasks()
-          print("Adding new task: \(newTask)")
+          localRealm.add(obj)
         }
       } catch {
-        print("Error adding new task to Realm \(error)")
+        print("Error adding new obj to Realm \(error)")
       }
     }
   }
   
-  func getTasks() {
-    if let localRealm = localRealm {
-      let sortProperties = [SortDescriptor(keyPath: "date", ascending: true)]
-      let allTasks = localRealm.objects(Task.self).sorted(by: sortProperties)
-      tasks = []
-      allTasks.forEach { task in
-        tasks.append(task)
-      }
+  func findAll() -> [T]? {
+    let allTasks = localRealm?.objects(T.self)
+    var tasks: [T] = []
+    
+    allTasks?.forEach { task in
+      tasks.append(task)
     }
+    return tasks
   }
   
+  
+  //budet ne nujno
   func updateTask(id: ObjectId, completed: Bool) {
     if let localRealm = localRealm {
       do {
@@ -63,19 +59,15 @@ class RealmManager: ObservableObject {
     }
   }
   
-  func deleteTask(id: ObjectId) {
+  func update(obj: T, id: ObjectId) {
     if let localRealm = localRealm {
       do {
-        let taskToDelete = localRealm.objects(Task.self).filter(NSPredicate(format: "id == %@", id))
-        guard !taskToDelete.isEmpty else { return }
-        
+        let objToUpdate = localRealm.objects(T.self).filter(NSPredicate(format: "id == %@", id))
+        guard !objToUpdate.isEmpty else { return }
         try localRealm.write {
-          localRealm.delete(taskToDelete)
-          getTasks()
-          print("Deleted task with id: \(id)")
-        }
+          localRealm.add(obj, update: .modified)        }
       } catch {
-        print("Error deleting task: \(error)")
+        print("Error updating \(error)")
       }
     }
   }

@@ -213,7 +213,8 @@ extension ToDoViewController: UICollectionViewDelegate {
       
     default:
       let task = tasks[indexPath.row]
-      vm.tapTaskForComplete(taskID: task.id, newCompletedStatus: !task.completed)
+      //      vm.tapTaskForComplete(taskID: task.id, newCompletedStatus: !task.completed)
+      vm.tapTaskForComplete(taskIndex: indexPath.row, newCompletedStatus: !task.completed )
     }
   }
   

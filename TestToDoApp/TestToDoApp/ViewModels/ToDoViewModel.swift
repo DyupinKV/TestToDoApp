@@ -7,7 +7,8 @@ protocol ToDoViewModelDelegate: AnyObject {
 }
 
 class ToDoViewModel {
-  private lazy var realmManager = RealmManager()
+  private lazy var realmManager = RealmManager<Task>()
+  
   lazy var pickedCategory = "" {
     didSet {
       delegate?.updatedPickedCategory()
@@ -23,8 +24,10 @@ class ToDoViewModel {
   }
   
   func getData() {
-    self.data = self.pickedCategory != "" ? realmManager.tasks.filter({task in
-      return task.category == pickedCategory}) : realmManager.tasks
+    let tasks = realmManager.findAll() ?? []
+    
+    self.data = self.pickedCategory != "" ? tasks.filter({task in
+      return task.category == pickedCategory}) : tasks
   }
   
   func tapCategory(category: String) -> Bool {
@@ -33,16 +36,28 @@ class ToDoViewModel {
       
       return true
     } else {
+      let tasks = realmManager.findAll() ?? []
+      
       pickedCategory = category
-      self.data = realmManager.tasks.filter({task in
+      self.data = tasks.filter({task in
         return task.category == category})
       
       return false
     }
   }
   
-  func tapTaskForComplete(taskID: ObjectId, newCompletedStatus: Bool) {
-    realmManager.updateTask(id: taskID, completed: newCompletedStatus)
+  //staraya realizacia
+  //  func tapTaskForComplete(taskID: ObjectId, newCompletedStatus: Bool) {
+  //    realmManager.updateTask(id: taskID, completed: newCompletedStatus)
+  //    getData()
+  //  }
+  
+  func tapTaskForComplete(taskIndex: Int, newCompletedStatus: Bool) {
+    
+    var task = data[taskIndex]
+    
+    task.completed = newCompletedStatus
+    realmManager.update(obj: task, id: task.id)
     getData()
   }
   
@@ -51,4 +66,3 @@ class ToDoViewModel {
     getData()
   }
 }
-

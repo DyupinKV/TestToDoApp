@@ -65,8 +65,7 @@ class CreateNewTaskViewController: UIViewController {
   private lazy var taskCreateButton: UIButton = createCustomButton(title: "Create task",
                                                                    bgСolor: UIColor(rgb: 0xAA83E5),
                                                                    selector: #selector(didTapCreateButton))
-  private lazy var realmManager = RealmManager()
-  
+  private lazy var realmManager = RealmManager<Task>()
   
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -124,7 +123,8 @@ class CreateNewTaskViewController: UIViewController {
   }
   
   private func createTask(_ title: String, _ category: String) {
-    realmManager.addTask(taskTitle: title, category: category, date: datePicker.date)
+    let newTask = Task(value: ["title": title, "category": category, "date": datePicker.date, "completed": false])
+    realmManager.add(obj: newTask)
     
     let toDoVC = ToDoViewController()
     navigationController?.pushViewController(toDoVC, animated: true)
