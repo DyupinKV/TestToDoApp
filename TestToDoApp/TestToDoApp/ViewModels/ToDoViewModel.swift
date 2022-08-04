@@ -53,12 +53,13 @@ class ToDoViewModel {
   //  }
   
   func tapTaskForComplete(taskIndex: Int, newCompletedStatus: Bool) {
+    let task = data[taskIndex]
     
-    var task = data[taskIndex]
-    
-    task.completed = newCompletedStatus
-    realmManager.update(obj: task, id: task.id)
-    getData()
+    guard let object = realmManager.findFirst(key: task.id as AnyObject) else {
+      return
+    }
+
+    let _ = realmManager.update(d: object)
   }
   
   func showAllTasks() {

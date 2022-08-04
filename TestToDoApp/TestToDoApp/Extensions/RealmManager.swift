@@ -59,16 +59,20 @@ class RealmManager <T: RealmSwift.Object> {
     }
   }
   
-  func update(obj: T, id: ObjectId) {
-    if let localRealm = localRealm {
+  func update(d: T, block:(() -> Void)? = nil) -> Bool {
       do {
-        let objToUpdate = localRealm.objects(T.self).filter(NSPredicate(format: "id == %@", id))
-        guard !objToUpdate.isEmpty else { return }
-        try localRealm.write {
-          localRealm.add(obj, update: .modified)        }
-      } catch {
-        print("Error updating \(error)")
+          try localRealm?.write {
+              block?()
+            localRealm?.add(d, update: .modified)
+          }
+          return true
+      } catch let error as NSError {
+          print(error.description)
       }
-    }
+      return false
+  }
+  
+  func findFirst(key: AnyObject) -> T? {
+      return localRealm?.object(ofType: T.self, forPrimaryKey: key)
   }
 }
