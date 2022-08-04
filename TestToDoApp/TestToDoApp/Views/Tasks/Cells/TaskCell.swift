@@ -20,8 +20,6 @@ class TaskCell:UICollectionViewCell {
   
   private lazy var checked = UIImage(named: "Checkmark")
   
-  
-  
   override init(frame: CGRect) {
     super.init(frame: frame)
     backgroundColor = UIColor(white: 1, alpha: 1)

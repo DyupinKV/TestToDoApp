@@ -41,38 +41,17 @@ class RealmManager <T: RealmSwift.Object> {
     return tasks
   }
   
-  
-  //budet ne nujno
-  func updateTask(id: ObjectId, completed: Bool) {
+  func update(_ object: T, with dictionary: [String: Any])  {
     if let localRealm = localRealm {
       do {
-        let taskToUpdate = localRealm.objects(Task.self).filter(NSPredicate(format: "id == %@", id))
-        guard !taskToUpdate.isEmpty else { return }
-        
         try localRealm.write {
-          taskToUpdate[0].completed = completed
-          print("Updating task with id \(id), complete status \(completed)")
+          for (key, value) in dictionary {
+            object.setValue(value, forKey: key)
+          }
         }
       } catch {
-        print("Error updating task \(error)")
+        print("Error updating obj \(error)")
       }
     }
-  }
-  
-  func update(d: T, block:(() -> Void)? = nil) -> Bool {
-      do {
-          try localRealm?.write {
-              block?()
-            localRealm?.add(d, update: .modified)
-          }
-          return true
-      } catch let error as NSError {
-          print(error.description)
-      }
-      return false
-  }
-  
-  func findFirst(key: AnyObject) -> T? {
-      return localRealm?.object(ofType: T.self, forPrimaryKey: key)
   }
 }

@@ -159,7 +159,7 @@ class ToDoViewController: UIViewController {
     navigationController?.pushViewController(createNewTaskVC, animated: true)
   }
   
-  @objc func didTapShowAllBtn() {
+  @objc private func didTapShowAllBtn() {
     vm.showAllTasks()
   }
 }
