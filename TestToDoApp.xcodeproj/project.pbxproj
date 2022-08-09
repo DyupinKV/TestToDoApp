@@ -13,7 +13,6 @@
 		413F712028704638006144A3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 413F711F28704638006144A3 /* Assets.xcassets */; };
 		413F712328704638006144A3 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 413F712128704638006144A3 /* LaunchScreen.storyboard */; };
 		413F714E28749F9A006144A3 /* ToDoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 413F714D28749F9A006144A3 /* ToDoViewController.swift */; };
-		413F71532874A599006144A3 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 413F71522874A599006144A3 /* Extensions.swift */; };
 		413F715A287600CF006144A3 /* RealmManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 413F7159287600CF006144A3 /* RealmManager.swift */; };
 		413F715D28760126006144A3 /* Task.swift in Sources */ = {isa = PBXBuildFile; fileRef = 413F715C28760126006144A3 /* Task.swift */; };
 		413F715F287759BA006144A3 /* CreateNewTaskViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 413F715E287759BA006144A3 /* CreateNewTaskViewController.swift */; };
@@ -23,7 +22,7 @@
 		413F716E2880915A006144A3 /* SectionHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 413F716D2880915A006144A3 /* SectionHeader.swift */; };
 		416C12B728898B6C00A1CA3F /* ToDoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 416C12B628898B6C00A1CA3F /* ToDoViewModel.swift */; };
 		41F4BE3828870F52000E3A13 /* CategoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41F4BE3728870F52000E3A13 /* CategoryCell.swift */; };
-		F0A97781B9AECA7AC4996280 /* Pods_TestToDoApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A4611E756800756072FA5F6D /* Pods_TestToDoApp.framework */; };
+		7E69A2C574CE40DBFDF72779 /* Pods_TestToDoApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DFD011518E64B59E23765D4B /* Pods_TestToDoApp.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -44,7 +43,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		07F18FE2FA007A844564B2FE /* Pods-TestToDoApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TestToDoApp.debug.xcconfig"; path = "Target Support Files/Pods-TestToDoApp/Pods-TestToDoApp.debug.xcconfig"; sourceTree = "<group>"; };
+		0EE75B5E635D271BC69B005B /* Pods-TestToDoApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TestToDoApp.release.xcconfig"; path = "Target Support Files/Pods-TestToDoApp/Pods-TestToDoApp.release.xcconfig"; sourceTree = "<group>"; };
+		2F1462CCE3BAF6543554B966 /* Pods-TestToDoApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TestToDoApp.debug.xcconfig"; path = "Target Support Files/Pods-TestToDoApp/Pods-TestToDoApp.debug.xcconfig"; sourceTree = "<group>"; };
 		413F711328704636006144A3 /* TestToDoApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TestToDoApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		413F711628704636006144A3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		413F711828704637006144A3 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -55,7 +55,6 @@
 		413F712928704638006144A3 /* TestToDoAppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TestToDoAppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		413F713328704638006144A3 /* TestToDoAppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TestToDoAppUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		413F714D28749F9A006144A3 /* ToDoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToDoViewController.swift; sourceTree = "<group>"; };
-		413F71522874A599006144A3 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		413F7159287600CF006144A3 /* RealmManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmManager.swift; sourceTree = "<group>"; };
 		413F715C28760126006144A3 /* Task.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Task.swift; sourceTree = "<group>"; };
 		413F715E287759BA006144A3 /* CreateNewTaskViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateNewTaskViewController.swift; sourceTree = "<group>"; };
@@ -65,8 +64,7 @@
 		413F716D2880915A006144A3 /* SectionHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionHeader.swift; sourceTree = "<group>"; };
 		416C12B628898B6C00A1CA3F /* ToDoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToDoViewModel.swift; sourceTree = "<group>"; };
 		41F4BE3728870F52000E3A13 /* CategoryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryCell.swift; sourceTree = "<group>"; };
-		A4611E756800756072FA5F6D /* Pods_TestToDoApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TestToDoApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		EAB448EFE0841627BAA1F582 /* Pods-TestToDoApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TestToDoApp.release.xcconfig"; path = "Target Support Files/Pods-TestToDoApp/Pods-TestToDoApp.release.xcconfig"; sourceTree = "<group>"; };
+		DFD011518E64B59E23765D4B /* Pods_TestToDoApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TestToDoApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -74,7 +72,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F0A97781B9AECA7AC4996280 /* Pods_TestToDoApp.framework in Frameworks */,
+				7E69A2C574CE40DBFDF72779 /* Pods_TestToDoApp.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -101,7 +99,7 @@
 				413F711528704636006144A3 /* TestToDoApp */,
 				413F711428704636006144A3 /* Products */,
 				EFB7C5374C9AAB2E115B7A0B /* Pods */,
-				AFCA4BEFC6560AC6CDA21243 /* Frameworks */,
+				48AA71DA3FC7F2649185831F /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -152,7 +150,6 @@
 		413F71512874A552006144A3 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				413F71522874A599006144A3 /* Extensions.swift */,
 				413F7159287600CF006144A3 /* RealmManager.swift */,
 				413F71692880853E006144A3 /* GradientView.swift */,
 			);
@@ -195,10 +192,10 @@
 			path = Cells;
 			sourceTree = "<group>";
 		};
-		AFCA4BEFC6560AC6CDA21243 /* Frameworks */ = {
+		48AA71DA3FC7F2649185831F /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				A4611E756800756072FA5F6D /* Pods_TestToDoApp.framework */,
+				DFD011518E64B59E23765D4B /* Pods_TestToDoApp.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -206,8 +203,8 @@
 		EFB7C5374C9AAB2E115B7A0B /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				07F18FE2FA007A844564B2FE /* Pods-TestToDoApp.debug.xcconfig */,
-				EAB448EFE0841627BAA1F582 /* Pods-TestToDoApp.release.xcconfig */,
+				2F1462CCE3BAF6543554B966 /* Pods-TestToDoApp.debug.xcconfig */,
+				0EE75B5E635D271BC69B005B /* Pods-TestToDoApp.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -219,11 +216,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 413F713D28704638006144A3 /* Build configuration list for PBXNativeTarget "TestToDoApp" */;
 			buildPhases = (
-				DFBB3E1EC09FCBACD4640CE5 /* [CP] Check Pods Manifest.lock */,
+				A2B3BDDF50CB8E3879D05910 /* [CP] Check Pods Manifest.lock */,
 				413F710F28704636006144A3 /* Sources */,
 				413F711028704636006144A3 /* Frameworks */,
 				413F711128704636006144A3 /* Resources */,
-				590715A797A66C6099262363 /* [CP] Embed Pods Frameworks */,
+				24D4357AABDE34A134091CC1 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -341,7 +338,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		590715A797A66C6099262363 /* [CP] Embed Pods Frameworks */ = {
+		24D4357AABDE34A134091CC1 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -358,7 +355,7 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-TestToDoApp/Pods-TestToDoApp-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		DFBB3E1EC09FCBACD4640CE5 /* [CP] Check Pods Manifest.lock */ = {
+		A2B3BDDF50CB8E3879D05910 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -390,7 +387,6 @@
 				416C12B728898B6C00A1CA3F /* ToDoViewModel.swift in Sources */,
 				413F714E28749F9A006144A3 /* ToDoViewController.swift in Sources */,
 				413F715A287600CF006144A3 /* RealmManager.swift in Sources */,
-				413F71532874A599006144A3 /* Extensions.swift in Sources */,
 				413F7168287F2A79006144A3 /* TaskCell.swift in Sources */,
 				413F711728704636006144A3 /* AppDelegate.swift in Sources */,
 				413F7161287CA0D5006144A3 /* Categories.swift in Sources */,
@@ -568,7 +564,7 @@
 		};
 		413F713E28704638006144A3 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 07F18FE2FA007A844564B2FE /* Pods-TestToDoApp.debug.xcconfig */;
+			baseConfigurationReference = 2F1462CCE3BAF6543554B966 /* Pods-TestToDoApp.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -596,7 +592,7 @@
 		};
 		413F713F28704638006144A3 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = EAB448EFE0841627BAA1F582 /* Pods-TestToDoApp.release.xcconfig */;
+			baseConfigurationReference = 0EE75B5E635D271BC69B005B /* Pods-TestToDoApp.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;

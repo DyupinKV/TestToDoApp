@@ -1,6 +1,6 @@
 import UIKit
 
-class ToDoViewController: UIViewController {  
+final class ToDoViewController: UIViewController {  
   private var taskCollectionView: UICollectionView!
   private var categoriesCollectionView: UICollectionView!
   
@@ -21,6 +21,19 @@ class ToDoViewController: UIViewController {
     return showAllBtn
   }()
   
+  private lazy var addTaskButton: UIButton = {
+    let addTaskButton = UIButton(type: .system)
+    
+    addTaskButton.backgroundColor = #colorLiteral(red: 0.1962543428, green: 0.8419759274, blue: 0.2951532304, alpha: 1)
+    addTaskButton.setTitle("+", for: .normal)
+    addTaskButton.setTitleColor(.white, for: .normal)
+    addTaskButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
+    addTaskButton.layer.cornerRadius = 5
+    addTaskButton.addTarget(self, action: #selector(didTapAddTaskButton), for: .touchUpInside)
+    
+    return addTaskButton
+  }()
+  
   override func viewDidLoad() {
     super.viewDidLoad()
     
@@ -34,20 +47,11 @@ class ToDoViewController: UIViewController {
   
   private func setupViews() {
     view.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 0.9982756558)
-    
-    createCustomNavigationBar()
-    
-    let addTaskButton = createCustomButton(title: "+",
-                                           bgСolor: UIColor(rgb: 0x30D33B),
-                                           selector: #selector(didTapAddTaskButton),
-                                           width: 60)
+        
     let menuBarItem = UIBarButtonItem(customView: addTaskButton)
     
     navigationItem.rightBarButtonItem = menuBarItem
     navigationItem.title = "Tasks"
-    
-    let view = UIView()
-    view.backgroundColor = .white
   }
   
   private func setupShowAllBtn() {
@@ -213,7 +217,6 @@ extension ToDoViewController: UICollectionViewDelegate {
       
     default:
       let task = tasks[indexPath.row]
-      //      vm.tapTaskForComplete(taskID: task.id, newCompletedStatus: !task.completed)
       vm.tapTaskForComplete(taskIndex: indexPath.row, newCompletedStatus: !task.completed )
     }
   }

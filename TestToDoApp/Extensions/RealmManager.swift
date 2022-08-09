@@ -1,7 +1,7 @@
 import Foundation
 import RealmSwift
 
-class RealmManager <T: RealmSwift.Object> {
+final class RealmManager <T: RealmSwift.Object> {
   private(set) var localRealm: Realm?
   
   init() {

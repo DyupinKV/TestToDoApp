@@ -6,7 +6,7 @@ protocol ToDoViewModelDelegate: AnyObject {
   func updatedPickedCategory()
 }
 
-class ToDoViewModel {
+final class ToDoViewModel {
   private lazy var realmManager = RealmManager<Task>()
   
   lazy var pickedCategory = "" {
@@ -26,8 +26,8 @@ class ToDoViewModel {
   func getData() {
     let tasks = realmManager.findAll() ?? []
     
-    self.data = self.pickedCategory != "" ? tasks.filter({task in
-      return task.category == pickedCategory}) : tasks
+    self.data = self.pickedCategory != "" ? tasks.filter({
+      return $0.category == pickedCategory}) : tasks
   }
   
   func tapCategory(category: String) -> Bool {
@@ -39,8 +39,7 @@ class ToDoViewModel {
       let tasks = realmManager.findAll() ?? []
       
       pickedCategory = category
-      self.data = tasks.filter({task in
-        return task.category == category})
+      self.data = tasks.filter({$0.category == category})
       
       return false
     }

@@ -1,7 +1,7 @@
 import Foundation
 import UIKit
 
-class GradientView: UIView {
+final class GradientView: UIView {
   
   enum Point {
     case topLeading

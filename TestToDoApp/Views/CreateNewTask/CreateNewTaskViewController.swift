@@ -1,6 +1,6 @@
 import UIKit
 
-class CreateNewTaskViewController: UIViewController {
+final class CreateNewTaskViewController: UIViewController {
   
   private let titleLabel:UILabel = {
     let titleLabel = UILabel()
@@ -22,7 +22,7 @@ class CreateNewTaskViewController: UIViewController {
     return titleInput
   }()
   
-  private let dateLabel:UILabel = {
+  private let dateLabel: UILabel = {
     let dateLabel = UILabel()
     dateLabel.text = "Choose task date:"
     dateLabel.font = UIFont.systemFont(ofSize: 20)
@@ -43,7 +43,7 @@ class CreateNewTaskViewController: UIViewController {
     let categoriesTextView = UITextField()
     
     categoriesTextView.placeholder = "Choose category"
-    categoriesTextView.font = UIFont.systemFont(ofSize: 20)
+    categoriesTextView.font = UIFont.systemFont(ofSize: 16)
     categoriesTextView.layer.borderWidth = 1
     categoriesTextView.layer.cornerRadius = 5
     categoriesTextView.textAlignment = .center
@@ -61,10 +61,23 @@ class CreateNewTaskViewController: UIViewController {
     return stackView
   }()
   
+  private lazy var taskCreateButton: UIButton = {
+    let taskCreateButton = UIButton(type: .system)
+    
+    taskCreateButton.backgroundColor = #colorLiteral(red: 0.1962543428, green: 0.8419759274, blue: 0.2951532304, alpha: 1)
+    taskCreateButton.setTitle("Create task", for: .normal)
+    taskCreateButton.setTitleColor(.white, for: .normal)
+    taskCreateButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
+    taskCreateButton.layer.cornerRadius = 5
+    taskCreateButton.addTarget(self, action: #selector(didTapCreateButton), for: .touchUpInside)
+    
+    taskCreateButton.widthAnchor.constraint(equalToConstant: 140).isActive = true
+    
+    return taskCreateButton
+  }()
+  
   private let categoriesPickerView = UIPickerView()
-  private lazy var taskCreateButton: UIButton = createCustomButton(title: "Create task",
-                                                                   bgСolor: UIColor(rgb: 0xAA83E5),
-                                                                   selector: #selector(didTapCreateButton))
+
   private lazy var realmManager = RealmManager<Task>()
   
   override func viewDidLoad() {
