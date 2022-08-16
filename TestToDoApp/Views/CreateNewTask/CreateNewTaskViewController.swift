@@ -2,35 +2,35 @@ import UIKit
 
 final class CreateNewTaskViewController: UIViewController {
   
-  private let titleLabel:UILabel = {
-    let titleLabel = UILabel()
-    titleLabel.text = "Task name:"
-    titleLabel.font = UIFont.systemFont(ofSize: 20)
+  private func createNewLabel(text: String = "", fontSize: CGFloat = 20, textColor: UIColor = .black) -> UILabel {
+    let label = UILabel()
+    label.font = UIFont.systemFont(ofSize: fontSize)
+    label.text = text
+    label.textColor = textColor
     
-    return titleLabel
-  }()
+    return label
+  }
   
-  private var titleInput: UITextField = {
-    let titleInput = UITextField()
+  private func createTextField(placeholder: String = "") -> UITextField {
+    let textField = UITextField()
     
-    titleInput.placeholder = "Enter task name"
-    titleInput.font = UIFont.systemFont(ofSize: 16)
-    titleInput.layer.borderWidth = 1
-    titleInput.layer.cornerRadius = 5
-    titleInput.textAlignment = .center
+    textField.placeholder = placeholder
+    textField.font = UIFont.systemFont(ofSize: 16)
+    textField.layer.borderWidth = 1
+    textField.layer.cornerRadius = 5
+    textField.textAlignment = .center
     
-    return titleInput
-  }()
+    return textField
+  }
   
-  private let dateLabel: UILabel = {
-    let dateLabel = UILabel()
-    dateLabel.text = "Choose task date:"
-    dateLabel.font = UIFont.systemFont(ofSize: 20)
-    
-    return dateLabel
-  }()
+  private lazy var titleLabel = createNewLabel(text: "Task name:")
+  private lazy var dateLabel = createNewLabel(text: "Choose task date:")
+  private lazy var warningLabel = createNewLabel(fontSize: 14, textColor: .red)
   
-  private let datePicker: UIDatePicker = {
+  private lazy var titleInput = createTextField(placeholder: "Enter task name")
+  private lazy var categoriesTextView = createTextField(placeholder: "Choose category")
+  
+  private lazy var datePicker: UIDatePicker = {
     let datePicker = UIDatePicker()
     datePicker.datePickerMode = .dateAndTime
     datePicker.locale = NSLocale(localeIdentifier: "en_GB") as Locale
@@ -39,19 +39,7 @@ final class CreateNewTaskViewController: UIViewController {
     return datePicker
   }()
   
-  private let categoriesTextView: UITextField = {
-    let categoriesTextView = UITextField()
-    
-    categoriesTextView.placeholder = "Choose category"
-    categoriesTextView.font = UIFont.systemFont(ofSize: 16)
-    categoriesTextView.layer.borderWidth = 1
-    categoriesTextView.layer.cornerRadius = 5
-    categoriesTextView.textAlignment = .center
-    
-    return categoriesTextView
-  }()
-  
-  private let stackView: UIStackView = {
+  private lazy var stackView: UIStackView = {
     let stackView = UIStackView()
     stackView.axis = NSLayoutConstraint.Axis.vertical
     stackView.distribution = UIStackView.Distribution.equalSpacing
@@ -76,8 +64,8 @@ final class CreateNewTaskViewController: UIViewController {
     return taskCreateButton
   }()
   
-  private let categoriesPickerView = UIPickerView()
-
+  private lazy var categoriesPickerView = UIPickerView()
+  
   private lazy var realmManager = RealmManager<Task>()
   
   override func viewDidLoad() {
@@ -100,6 +88,7 @@ final class CreateNewTaskViewController: UIViewController {
     stackView.addArrangedSubview(dateLabel)
     stackView.addArrangedSubview(datePicker)
     stackView.addArrangedSubview(categoriesTextView)
+    stackView.addArrangedSubview(warningLabel)
     stackView.addArrangedSubview(taskCreateButton)
   }
   
@@ -117,6 +106,8 @@ final class CreateNewTaskViewController: UIViewController {
     
     categoriesTextView.heightAnchor.constraint(equalToConstant: offset).isActive = true
     categoriesTextView.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -offset).isActive = true
+    
+    warningLabel.heightAnchor.constraint(equalToConstant: 20).isActive = true
   }
   
   @objc func didTapCreateButton() {
@@ -127,9 +118,11 @@ final class CreateNewTaskViewController: UIViewController {
     case ("", _):
       titleInput.layer.borderColor = #colorLiteral(red: 1, green: 0.1491314173, blue: 0, alpha: 1)
       categoriesTextView.layer.borderColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
+      warningLabel.text = "Please enter the title"
     case (_, "") :
       categoriesTextView.layer.borderColor = #colorLiteral(red: 1, green: 0.1491314173, blue: 0, alpha: 1)
       titleInput.layer.borderColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
+      warningLabel.text = "Please choose category"
     default:
       createTask(title, category)
     }
@@ -173,7 +166,7 @@ final class CreateNewTaskViewController: UIViewController {
     categoriesTextView.layer.borderColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
     
     categoriesTextView.text = selectedValue
-    view.endEditing(true)
+    closeCategoriesPicker()
   }
 }
 

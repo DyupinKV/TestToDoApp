@@ -4,7 +4,7 @@ import UIKit
 class CategoryCell:UICollectionViewCell {
   static var reuseIdentifier: String = "CategoryCell"
   
-  let gradientView = GradientView(from: .topLeading, to: .bottomTrailing, inColor: .purple, toColor: .red)
+  let gradientView = GradientView(from: .topLeading, to: .bottomTrailing, inColor: .clear, toColor: .clear)
   let categoryTitle = UILabel()
   
   override init(frame: CGRect) {
@@ -26,7 +26,10 @@ class CategoryCell:UICollectionViewCell {
   }
   
   func configure(with category:String) {
-    guard let category = Categories(rawValue: category)  else {return}
+    guard let category = Categories(rawValue: category) else {
+      categoryTitle.text = "All categories"
+      return
+    }
     
     let startColor = pickCategoryStartColor(category: category)
     let endColor = pickCategoryEndColor(category: category)

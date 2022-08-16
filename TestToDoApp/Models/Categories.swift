@@ -12,7 +12,7 @@ enum Categories: String, CaseIterable {
 func pickCategoryStartColor(category: Categories)-> UIColor {
   switch category {
   case .Personal:
-    return #colorLiteral(red: 0.4513868093, green: 0.9930960536, blue: 1, alpha: 1)
+    return #colorLiteral(red: 0.4500938654, green: 0.9813225865, blue: 0.4743030667, alpha: 1)
   case .Shopping:
     return #colorLiteral(red: 0.9998531938, green: 0, blue: 0.1240663752, alpha: 1)
   case .Sport:
@@ -27,7 +27,7 @@ func pickCategoryStartColor(category: Categories)-> UIColor {
 func pickCategoryEndColor(category: Categories)-> UIColor {
   switch category {
   case .Personal:
-    return #colorLiteral(red: 0, green: 0.9810667634, blue: 0.5736914277, alpha: 1)
+    return #colorLiteral(red: 0, green: 0.5603182912, blue: 0, alpha: 1)
   case .Shopping:
     return #colorLiteral(red: 1, green: 0.5409764051, blue: 0.8473142982, alpha: 1)
   case .Sport:

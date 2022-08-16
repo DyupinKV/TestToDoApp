@@ -1,7 +1,7 @@
 import Foundation
 import UIKit
 
-class TaskCell:UICollectionViewCell {
+class TaskCell: UITableViewCell {
   static var reuseIdentifier: String = "TaskCell"
   
   let gradientView = GradientView(from: .topTrailing, to: .bottomLeading, inColor: .purple, toColor: .blue)
@@ -12,22 +12,21 @@ class TaskCell:UICollectionViewCell {
   let completeImgView: UIImageView = {
     let completeImgView:UIImageView = UIImageView()
     completeImgView.contentMode = UIView.ContentMode.scaleAspectFit
-    completeImgView.frame.size.width = 30
-    completeImgView.frame.size.height = 30
     
     return completeImgView
   }()
   
   private lazy var checked = UIImage(named: "Checkmark")
   
-  override init(frame: CGRect) {
-    super.init(frame: frame)
+  override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+    super.init(style: style, reuseIdentifier: reuseIdentifier)
     backgroundColor = UIColor(white: 1, alpha: 1)
+    selectionStyle = .none
     
     setupElements()
     setupConstrains()
     
-    self.layer.cornerRadius = 4
+    self.layer.cornerRadius = 6
     self.clipsToBounds = true
   }
   
@@ -56,6 +55,7 @@ class TaskCell:UICollectionViewCell {
     gradientView.setupGradientColors(startColor: startColor, endColor: endColor)
     taskTitle.text = task.title
     categoryName.text = task.category
+    categoryName.textColor = endColor
     timeLabel.text = time
     dateLabel.text = date
     
@@ -66,6 +66,7 @@ class TaskCell:UICollectionViewCell {
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
+  
 }
 
 extension TaskCell {
@@ -97,6 +98,8 @@ extension TaskCell {
     dateLabel.topAnchor.constraint(equalTo: timeLabel.bottomAnchor, constant: smallOffset).isActive = true
     dateLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: largeOffset).isActive = true
     
+    completeImgView.widthAnchor.constraint(equalToConstant: 30).isActive = true
+    completeImgView.heightAnchor.constraint(equalToConstant: 30).isActive = true
     completeImgView.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
     completeImgView.trailingAnchor.constraint(equalTo: gradientView.leadingAnchor, constant: -largeOffset).isActive = true
   }

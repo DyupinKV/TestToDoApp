@@ -24,14 +24,14 @@ final class ToDoViewModel {
   }
   
   func getData() {
-    let tasks = realmManager.findAll() ?? []
+    let tasks = realmManager.findAll()?.sorted(by: { $0.date < $1.date }) ?? []
     
-    self.data = self.pickedCategory != "" ? tasks.filter({
-      return $0.category == pickedCategory}) : tasks
+    self.data = self.pickedCategory.isEmpty ? tasks : tasks.filter({
+      return $0.category == pickedCategory})
   }
   
   func tapCategory(category: String) -> Bool {
-    if (pickedCategory == category) {
+    if (category == "All categories" || category == pickedCategory) {
       showAllTasks()
       
       return true
@@ -53,7 +53,15 @@ final class ToDoViewModel {
   }
   
   func showAllTasks() {
-    pickedCategory = ""
+    if (!pickedCategory.isEmpty) {
+      pickedCategory = ""
+      getData()
+    }
+  }
+  
+  func delete(taskIndex: Int) {
+    let task = data[taskIndex]
+    realmManager.delete(obj: task)
     getData()
   }
 }

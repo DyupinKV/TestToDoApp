@@ -32,13 +32,13 @@ final class RealmManager <T: RealmSwift.Object> {
   }
   
   func findAll() -> [T]? {
-    let allTasks = localRealm?.objects(T.self)
-    var tasks: [T] = []
+    let allObj = localRealm?.objects(T.self)
+    var objects: [T] = []
     
-    allTasks?.forEach { task in
-      tasks.append(task)
+    allObj?.forEach { obj in
+      objects.append(obj)
     }
-    return tasks
+    return objects
   }
   
   func update(_ object: T, with dictionary: [String: Any])  {
@@ -51,6 +51,18 @@ final class RealmManager <T: RealmSwift.Object> {
         }
       } catch {
         print("Error updating obj \(error)")
+      }
+    }
+  }
+  
+  func delete(obj: T) {
+    if let localRealm = localRealm {
+      do {
+        try localRealm.write {
+          localRealm.delete(obj)
+        }
+      } catch {
+        print("Error delete \(error)")
       }
     }
   }

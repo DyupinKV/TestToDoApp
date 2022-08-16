@@ -1,25 +1,12 @@
 import UIKit
 
 final class ToDoViewController: UIViewController {  
-  private var taskCollectionView: UICollectionView!
   private var categoriesCollectionView: UICollectionView!
+  private var taskTableView: UITableView!
   
   var vm = ToDoViewModel()
   private lazy var tasks:[Task] = []
   private lazy var categories:[String] = vm.categories
-  
-  private lazy var showAllBtn: UIButton = {
-    let showAllBtn = UIButton(type: .system)
-    
-    showAllBtn.backgroundColor = .blue
-    showAllBtn.setTitle("Show all", for: .normal)
-    showAllBtn.setTitleColor(.white, for: .normal)
-    showAllBtn.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
-    showAllBtn.layer.cornerRadius = 5
-    showAllBtn.addTarget(self, action: #selector(didTapShowAllBtn), for: .touchUpInside)
-    
-    return showAllBtn
-  }()
   
   private lazy var addTaskButton: UIButton = {
     let addTaskButton = UIButton(type: .system)
@@ -34,224 +21,195 @@ final class ToDoViewController: UIViewController {
     return addTaskButton
   }()
   
+  private let categoriesTitle: UILabel = {
+    let categoriesTitle = UILabel()
+    categoriesTitle.text = "Categories"
+    categoriesTitle.font = UIFont.systemFont(ofSize: 20)
+    
+    return categoriesTitle
+  }()
+  
+  private let stackView: UIStackView = {
+    let stackView = UIStackView()
+    stackView.axis = NSLayoutConstraint.Axis.vertical
+    stackView.distribution = UIStackView.Distribution.equalSpacing
+    stackView.alignment = UIStackView.Alignment.center
+    stackView.spacing = 24.0
+    
+    return stackView
+  }()
+  
   override func viewDidLoad() {
     super.viewDidLoad()
+    vm.categories.insert("All categories", at: 0)
     
     setupViews()
     vm.delegate = self
     vm.getData()
     setupCategoriesCollectionView()
-    setupTasksCollectionView()
-    setupShowAllBtn()
+    setupTasksTableView()
+    addStackView()
+    setupCategoriesTitle()
   }
   
   private func setupViews() {
     view.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 0.9982756558)
-        
+    
     let menuBarItem = UIBarButtonItem(customView: addTaskButton)
     
     navigationItem.rightBarButtonItem = menuBarItem
     navigationItem.title = "Tasks"
   }
   
-  private func setupShowAllBtn() {
-    view.addSubview(showAllBtn)
-    showAllBtn.translatesAutoresizingMaskIntoConstraints = false
-    
-    showAllBtn.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -36).isActive = true
-    showAllBtn.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -32).isActive = true
-    showAllBtn.widthAnchor.constraint(equalToConstant: 100).isActive = true
-    
-    showAllBtn.isHidden = true
-  }
-  
-  func setupTasksCollectionView () {
-    taskCollectionView = UICollectionView( frame: .zero, collectionViewLayout: createTasksListLayout())
-    taskCollectionView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-    
-    taskCollectionView.register(SectionHeader.self,
-                                forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
-                                withReuseIdentifier: SectionHeader.reuseId)
-    taskCollectionView.register(TaskCell.self, forCellWithReuseIdentifier: TaskCell.reuseIdentifier)
-    taskCollectionView.backgroundColor = UIColor.white
-    
-    taskCollectionView.dataSource = self
-    taskCollectionView.delegate = self
-    
-    view.addSubview(taskCollectionView)
-    
-    taskCollectionView.translatesAutoresizingMaskIntoConstraints = false
-    
-    taskCollectionView.widthAnchor.constraint(equalTo: view.widthAnchor).isActive = true
-    taskCollectionView.topAnchor.constraint(equalTo: view.topAnchor, constant: 200).isActive = true
-    taskCollectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0).isActive = true
+  func setupCategoriesTitle() {
+    categoriesTitle.translatesAutoresizingMaskIntoConstraints = false
+    categoriesTitle.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -16).isActive = true
   }
   
   func setupCategoriesCollectionView () {
-    categoriesCollectionView = UICollectionView(frame: .zero, collectionViewLayout: createCategoryListLayout())
+    categoriesCollectionView = UICollectionView(frame: .zero, collectionViewLayout: createCategoryLayout())
     categoriesCollectionView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-    
-    categoriesCollectionView.register(SectionHeader.self,
-                                      forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
-                                      withReuseIdentifier: SectionHeader.reuseId)
-    categoriesCollectionView.register(CategoryCell.self, forCellWithReuseIdentifier: CategoryCell.reuseIdentifier)
+    categoriesCollectionView.showsHorizontalScrollIndicator = false
+    categoriesCollectionView.register( CategoryCell.self,
+                                       forCellWithReuseIdentifier: CategoryCell.reuseIdentifier)
     categoriesCollectionView.backgroundColor = UIColor.white
     
     categoriesCollectionView.dataSource = self
     categoriesCollectionView.delegate = self
     
-    view.addSubview(categoriesCollectionView)
-    
     categoriesCollectionView.translatesAutoresizingMaskIntoConstraints = false
-    
-    categoriesCollectionView.widthAnchor.constraint(equalTo: view.widthAnchor).isActive = true
-    categoriesCollectionView.topAnchor.constraint(equalTo: view.topAnchor, constant: 24).isActive = true
-    categoriesCollectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0).isActive = true
+    categoriesCollectionView.heightAnchor.constraint(equalToConstant: 76).isActive = true
   }
   
-  private func createTasksListLayout() -> UICollectionViewCompositionalLayout {
-    let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(86))
-    let item = NSCollectionLayoutItem(layoutSize: itemSize)
-    item.contentInsets = NSDirectionalEdgeInsets.init(top: 0, leading: 0, bottom: 8 , trailing: 0)
+  func setupTasksTableView() {
+    taskTableView = UITableView()
     
-    let groupSize = NSCollectionLayoutSize (widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(1))
-    let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitems: [item])
+    taskTableView.register(TasksHeader.self, forHeaderFooterViewReuseIdentifier: TasksHeader.reuseIdentifier)
+    taskTableView.register(TaskCell.self, forCellReuseIdentifier: TaskCell.reuseIdentifier)
+    taskTableView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+    taskTableView.showsVerticalScrollIndicator = false
     
-    let section = NSCollectionLayoutSection(group: group)
-    section.contentInsets = NSDirectionalEdgeInsets(top: 12, leading: 20, bottom: 0, trailing: 20)
+    taskTableView.dataSource = self
+    taskTableView.delegate = self
+  }
+  
+  
+  func addStackView() {
+    stackView.addArrangedSubview(categoriesTitle)
+    stackView.addArrangedSubview(categoriesCollectionView)
+    stackView.addArrangedSubview(taskTableView)
     
-    let header = createSectionHeader()
-    section.boundarySupplementaryItems = [header]
+    stackView.axis = .vertical
+    stackView.distribution = .fill
+    stackView.alignment = .fill
+    stackView.spacing = 10
+    stackView.translatesAutoresizingMaskIntoConstraints = false
     
-    let layout = UICollectionViewCompositionalLayout(section: section)
+    view.addSubview(stackView)
+    
+    stackView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+    stackView.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
+    stackView.widthAnchor.constraint(equalTo: view.widthAnchor).isActive = true
+    stackView.heightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.heightAnchor).isActive = true
+    stackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
+  }
+  
+  private func createCategoryLayout() -> UICollectionViewFlowLayout {
+    let layout = UICollectionViewFlowLayout()
+    layout.scrollDirection = .horizontal
+    layout.minimumLineSpacing = 12
+    layout.minimumInteritemSpacing = 12
+    layout.sectionInset = UIEdgeInsets(top: 12, left: 12, bottom: 0, right: 12)
+    layout.itemSize = CGSize(width: 130, height: 54)
+    
     return layout
-  }
-  
-  private func createCategoryListLayout() -> UICollectionViewCompositionalLayout {
-    let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
-                                          heightDimension: .fractionalHeight(1.0))
-    let item = NSCollectionLayoutItem(layoutSize: itemSize)
-    item.contentInsets = NSDirectionalEdgeInsets.init(top: 0, leading: 8, bottom: 0, trailing: 8)
-    
-    let groupSize = NSCollectionLayoutSize (widthDimension: .estimated(130), heightDimension: .estimated(54))
-    
-    let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitems: [item])
-    
-    let section = NSCollectionLayoutSection(group: group)
-    section.orthogonalScrollingBehavior = .continuous
-    section.contentInsets = NSDirectionalEdgeInsets(top: 12, leading: 12, bottom: 20, trailing: 12)
-    
-    let header = createSectionHeader()
-    section.boundarySupplementaryItems = [header]
-    
-    let layout = UICollectionViewCompositionalLayout(section: section)
-    return layout
-  }
-  
-  func createSectionHeader() -> NSCollectionLayoutBoundarySupplementaryItem {
-    let layoutSectionHeaderSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .estimated(1))
-    
-    let layoutHeaderSection = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: layoutSectionHeaderSize,
-                                                                          elementKind: UICollectionView.elementKindSectionHeader,
-                                                                          alignment: .top)
-    
-    return layoutHeaderSection
   }
   
   @objc private func didTapAddTaskButton() {
     let createNewTaskVC = CreateNewTaskViewController()
     navigationController?.pushViewController(createNewTaskVC, animated: true)
   }
-  
-  @objc private func didTapShowAllBtn() {
-    vm.showAllTasks()
-  }
 }
 
-extension ToDoViewController: UICollectionViewDataSource {
+extension ToDoViewController: UICollectionViewDataSource, UITableViewDataSource {
   func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-    switch collectionView {
-    case taskCollectionView:
-      return tasks.count
-    default:
-      return categories.count
-    }
+    return categories.count
   }
   
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-    if(collectionView == taskCollectionView) {
-      let task = tasks[indexPath.row]
-      guard let cell = collectionView.dequeueReusableCell(
-        withReuseIdentifier: TaskCell.reuseIdentifier,
-        for: indexPath
-      ) as? TaskCell else {
-        return UICollectionViewCell()
-      }
-      cell.configure(with: task)
-      return cell
-    } else {
-      let category = categories[indexPath.row]
-      guard let cell = collectionView.dequeueReusableCell(
-        withReuseIdentifier: CategoryCell.reuseIdentifier,
-        for: indexPath
-      ) as? CategoryCell else {
-        return UICollectionViewCell()
-      }
-      cell.backgroundColor = #colorLiteral(red: 0.9647058845, green: 0.9647058845, blue: 0.9647058845, alpha: 1)
-      cell.configure(with: category)
-      return cell
+    let category = categories[indexPath.row]
+    guard let cell = collectionView.dequeueReusableCell(
+      withReuseIdentifier: CategoryCell.reuseIdentifier,
+      for: indexPath
+    ) as? CategoryCell else {
+      return UICollectionViewCell()
     }
+    cell.backgroundColor = #colorLiteral(red: 0.9647058845, green: 0.9647058845, blue: 0.9647058845, alpha: 1)
+    cell.configure(with: category)
+    return cell
+  }
+  
+  func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    let task = tasks[indexPath.row]
+    
+    guard let cell = tableView.dequeueReusableCell(
+      withIdentifier: TaskCell.reuseIdentifier,
+      for: indexPath
+    ) as? TaskCell else {
+      return UITableViewCell()
+    }
+    cell.configure(with: task)
+    
+    return cell
+  }
+  
+  func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    return tasks.count
+  }
+  
+  func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+    return 86
   }
 }
 
-extension ToDoViewController: UICollectionViewDelegate {
+extension ToDoViewController: UICollectionViewDelegate, UITableViewDelegate {
   func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-    switch collectionView {
-    case categoriesCollectionView:
-      let category = categories[indexPath.row]
-      let unselectCategory = vm.tapCategory(category: category)
-      let selectedCell = collectionView.cellForItem(at: indexPath)
-      let cellColor = unselectCategory ? #colorLiteral(red: 0.9647058845, green: 0.9647058845, blue: 0.9647058845, alpha: 1) : .green
-      
-      selectedCell?.backgroundColor = cellColor
-      
-    default:
-      let task = tasks[indexPath.row]
-      vm.tapTaskForComplete(taskIndex: indexPath.row, newCompletedStatus: !task.completed )
-    }
+    let category = categories[indexPath.row]
+    let unselectCategory = vm.tapCategory(category: category)
+    let selectedCell = collectionView.cellForItem(at: indexPath)
+    let cellColor = unselectCategory ? #colorLiteral(red: 0.9647058845, green: 0.9647058845, blue: 0.9647058845, alpha: 1) : .green
+    
+    selectedCell?.backgroundColor = cellColor
   }
   
   func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
-    if collectionView == categoriesCollectionView {
-      for cell in collectionView.visibleCells {
-        cell.backgroundColor =  #colorLiteral(red: 0.9647058845, green: 0.9647058845, blue: 0.9647058845, alpha: 1)
-      }
+    for cell in collectionView.visibleCells {
+      cell.backgroundColor =  #colorLiteral(red: 0.9647058845, green: 0.9647058845, blue: 0.9647058845, alpha: 1)
     }
   }
-}
-
-extension ToDoViewController: UICollectionViewDelegateFlowLayout {
-  func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-    guard let header = collectionView.dequeueReusableSupplementaryView(
-      ofKind: kind,
-      withReuseIdentifier: SectionHeader.reuseId,
-      for: indexPath) as? SectionHeader else {
-      return UICollectionReusableView()
+  
+  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    let task = tasks[indexPath.row]
+    vm.tapTaskForComplete(taskIndex: indexPath.row, newCompletedStatus: !task.completed )
+  }
+  
+  func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+    guard let view = tableView.dequeueReusableHeaderFooterView(withIdentifier: TasksHeader.reuseIdentifier) as? TasksHeader else {
+      return UIView()
     }
-    switch collectionView {
-    case taskCollectionView:
-      header.title.text = "Tasks"
-    default:
-      header.title.text = "Categories"
-    }
-    return header
+    view.title.text = "Tasks"
+    
+    return view
+  }
+  
+  func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+    guard editingStyle == .delete else { return }
+    vm.delete(taskIndex: indexPath.row)
   }
 }
 
 extension ToDoViewController: ToDoViewModelDelegate {
   func updatedPickedCategory() {
-    showAllBtn.isHidden = vm.pickedCategory != "" ? false : true
-    
     for cell in categoriesCollectionView.visibleCells {
       cell.backgroundColor =  #colorLiteral(red: 0.9647058845, green: 0.9647058845, blue: 0.9647058845, alpha: 1)
     }
@@ -260,7 +218,7 @@ extension ToDoViewController: ToDoViewModelDelegate {
   func updatedInfo() {
     DispatchQueue.main.async { [self] in
       self.tasks = vm.data
-      self.taskCollectionView.reloadData()
+      self.taskTableView.reloadData()
     }
   }
 }
