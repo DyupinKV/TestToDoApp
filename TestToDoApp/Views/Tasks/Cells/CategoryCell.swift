@@ -28,6 +28,7 @@ class CategoryCell:UICollectionViewCell {
   func configure(with category:String) {
     guard let category = Categories(rawValue: category) else {
       categoryTitle.text = "All categories"
+      gradientView.setupGradientColors(startColor: .clear, endColor: .clear)
       return
     }
     

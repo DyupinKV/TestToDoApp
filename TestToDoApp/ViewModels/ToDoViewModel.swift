@@ -3,17 +3,12 @@ import RealmSwift
 
 protocol ToDoViewModelDelegate: AnyObject {
   func updatedInfo()
-  func updatedPickedCategory()
 }
 
 final class ToDoViewModel {
   private lazy var realmManager = RealmManager<Task>()
   
-  lazy var pickedCategory = "" {
-    didSet {
-      delegate?.updatedPickedCategory()
-    }
-  }
+  lazy var pickedCategory = ""
   lazy var categories = Categories.allCases.map { $0.rawValue }
   
   weak var delegate: ToDoViewModelDelegate?

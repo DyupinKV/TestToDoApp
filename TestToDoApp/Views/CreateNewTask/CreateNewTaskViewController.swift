@@ -83,6 +83,7 @@ final class CreateNewTaskViewController: UIViewController {
     titleInput.translatesAutoresizingMaskIntoConstraints = false
     stackView.translatesAutoresizingMaskIntoConstraints = false
     
+    
     stackView.addArrangedSubview(titleLabel)
     stackView.addArrangedSubview(titleInput)
     stackView.addArrangedSubview(dateLabel)
@@ -106,6 +107,7 @@ final class CreateNewTaskViewController: UIViewController {
     
     categoriesTextView.heightAnchor.constraint(equalToConstant: offset).isActive = true
     categoriesTextView.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -offset).isActive = true
+    categoriesTextView.delegate = self
     
     warningLabel.heightAnchor.constraint(equalToConstant: 20).isActive = true
   }
@@ -186,3 +188,8 @@ extension CreateNewTaskViewController: UIPickerViewDataSource {
   }
 }
 
+extension CreateNewTaskViewController: UITextFieldDelegate{
+  func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+    false
+  }
+}

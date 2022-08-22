@@ -1,12 +1,12 @@
 import UIKit
 
-final class ToDoViewController: UIViewController {  
-  private var categoriesCollectionView: UICollectionView!
-  private var taskTableView: UITableView!
+final class ToDoViewController: UIViewController {
+  private lazy var categoriesCollectionView = UICollectionView()
+  private lazy var taskTableView = UITableView()
   
-  var vm = ToDoViewModel()
+  private lazy var vm = ToDoViewModel()
   private lazy var tasks:[Task] = []
-  private lazy var categories:[String] = vm.categories
+  private lazy var categories:[String] = []
   
   private lazy var addTaskButton: UIButton = {
     let addTaskButton = UIButton(type: .system)
@@ -29,6 +29,15 @@ final class ToDoViewController: UIViewController {
     return categoriesTitle
   }()
   
+  private let emptyTasksLabel: UILabel = {
+    let emptyTasksLabel = UILabel()
+    emptyTasksLabel.text = "You are lucky! You have no tasks"
+    emptyTasksLabel.font = UIFont.systemFont(ofSize: 16)
+    emptyTasksLabel.textColor = .darkGray
+    
+    return emptyTasksLabel
+  }()
+  
   private let stackView: UIStackView = {
     let stackView = UIStackView()
     stackView.axis = NSLayoutConstraint.Axis.vertical
@@ -42,6 +51,7 @@ final class ToDoViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     vm.categories.insert("All categories", at: 0)
+    self.categories = vm.categories
     
     setupViews()
     vm.delegate = self
@@ -50,6 +60,7 @@ final class ToDoViewController: UIViewController {
     setupTasksTableView()
     addStackView()
     setupCategoriesTitle()
+    setupEmptyTasksLabel()
   }
   
   private func setupViews() {
@@ -64,6 +75,13 @@ final class ToDoViewController: UIViewController {
   func setupCategoriesTitle() {
     categoriesTitle.translatesAutoresizingMaskIntoConstraints = false
     categoriesTitle.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -16).isActive = true
+  }
+  
+  func setupEmptyTasksLabel() {
+    emptyTasksLabel.translatesAutoresizingMaskIntoConstraints = false
+    emptyTasksLabel.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -32).isActive = true
+    emptyTasksLabel.topAnchor.constraint(equalTo: taskTableView.topAnchor, constant: 60).isActive = true
+    emptyTasksLabel.leftAnchor.constraint(equalTo: taskTableView.leftAnchor, constant: 16).isActive = true
   }
   
   func setupCategoriesCollectionView () {
@@ -91,6 +109,8 @@ final class ToDoViewController: UIViewController {
     
     taskTableView.dataSource = self
     taskTableView.delegate = self
+    
+    taskTableView.addSubview(emptyTasksLabel)
   }
   
   
@@ -117,8 +137,8 @@ final class ToDoViewController: UIViewController {
   private func createCategoryLayout() -> UICollectionViewFlowLayout {
     let layout = UICollectionViewFlowLayout()
     layout.scrollDirection = .horizontal
-    layout.minimumLineSpacing = 12
-    layout.minimumInteritemSpacing = 12
+    layout.minimumLineSpacing = 16
+    layout.minimumInteritemSpacing = 16
     layout.sectionInset = UIEdgeInsets(top: 12, left: 12, bottom: 0, right: 12)
     layout.itemSize = CGSize(width: 130, height: 54)
     
@@ -144,7 +164,10 @@ extension ToDoViewController: UICollectionViewDataSource, UITableViewDataSource 
     ) as? CategoryCell else {
       return UICollectionViewCell()
     }
-    cell.backgroundColor = #colorLiteral(red: 0.9647058845, green: 0.9647058845, blue: 0.9647058845, alpha: 1)
+    let pickedCategory = vm.pickedCategory
+    let bgColor = (pickedCategory.isEmpty && category == "All categories") || pickedCategory == category ? .green : #colorLiteral(red: 0.9647058845, green: 0.9647058845, blue: 0.9647058845, alpha: 1)
+    
+    cell.backgroundColor = bgColor
     cell.configure(with: category)
     return cell
   }
@@ -164,7 +187,14 @@ extension ToDoViewController: UICollectionViewDataSource, UITableViewDataSource 
   }
   
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return tasks.count
+    let cellsCount = tasks.count
+    if cellsCount == 0 {
+      emptyTasksLabel.isHidden = false
+    } else {
+      emptyTasksLabel.isHidden = true
+    }
+    
+    return cellsCount
   }
   
   func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -176,16 +206,7 @@ extension ToDoViewController: UICollectionViewDelegate, UITableViewDelegate {
   func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
     let category = categories[indexPath.row]
     let unselectCategory = vm.tapCategory(category: category)
-    let selectedCell = collectionView.cellForItem(at: indexPath)
-    let cellColor = unselectCategory ? #colorLiteral(red: 0.9647058845, green: 0.9647058845, blue: 0.9647058845, alpha: 1) : .green
-    
-    selectedCell?.backgroundColor = cellColor
-  }
-  
-  func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
-    for cell in collectionView.visibleCells {
-      cell.backgroundColor =  #colorLiteral(red: 0.9647058845, green: 0.9647058845, blue: 0.9647058845, alpha: 1)
-    }
+    collectionView.reloadData()
   }
   
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -209,12 +230,6 @@ extension ToDoViewController: UICollectionViewDelegate, UITableViewDelegate {
 }
 
 extension ToDoViewController: ToDoViewModelDelegate {
-  func updatedPickedCategory() {
-    for cell in categoriesCollectionView.visibleCells {
-      cell.backgroundColor =  #colorLiteral(red: 0.9647058845, green: 0.9647058845, blue: 0.9647058845, alpha: 1)
-    }
-  }
-  
   func updatedInfo() {
     DispatchQueue.main.async { [self] in
       self.tasks = vm.data
