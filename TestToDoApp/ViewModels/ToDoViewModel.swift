@@ -14,6 +14,7 @@ final class ToDoViewModel {
   weak var delegate: ToDoViewModelDelegate?
   var data: [Task] = [] {
     didSet {
+      print("DidSet")
       delegate?.updatedInfo()
     }
   }
@@ -25,18 +26,14 @@ final class ToDoViewModel {
       return $0.category == pickedCategory})
   }
   
-  func tapCategory(category: String) -> Bool {
+  func tapCategory(category: String) {
     if (category == "All categories" || category == pickedCategory) {
       showAllTasks()
-      
-      return true
     } else {
       let tasks = realmManager.findAll() ?? []
       
       pickedCategory = category
       self.data = tasks.filter({$0.category == category})
-      
-      return false
     }
   }
   

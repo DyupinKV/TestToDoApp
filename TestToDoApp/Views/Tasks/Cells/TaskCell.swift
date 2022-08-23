@@ -4,12 +4,12 @@ import UIKit
 class TaskCell: UITableViewCell {
   static var reuseIdentifier: String = "TaskCell"
   
-  let gradientView = GradientView(from: .topTrailing, to: .bottomLeading, inColor: .purple, toColor: .blue)
-  let taskTitle = UILabel()
-  let categoryName = UILabel()
-  let timeLabel = UILabel()
-  let dateLabel = UILabel()
-  let completeImgView: UIImageView = {
+  private lazy var gradientView = GradientView(from: .topTrailing, to: .bottomLeading, inColor: .purple, toColor: .blue)
+  private lazy var taskTitle = UILabel()
+  private lazy var categoryName = UILabel()
+  private lazy var timeLabel = UILabel()
+  private lazy var dateLabel = UILabel()
+  private lazy var completeImgView: UIImageView = {
     let completeImgView:UIImageView = UIImageView()
     completeImgView.contentMode = UIView.ContentMode.scaleAspectFit
     
@@ -24,21 +24,19 @@ class TaskCell: UITableViewCell {
     selectionStyle = .none
     
     setupElements()
-    setupConstrains()
     
     self.layer.cornerRadius = 6
     self.clipsToBounds = true
   }
   
-  func setupElements() {
-    taskTitle.translatesAutoresizingMaskIntoConstraints = false
-    categoryName.translatesAutoresizingMaskIntoConstraints = false
-    timeLabel.translatesAutoresizingMaskIntoConstraints = false
-    dateLabel.translatesAutoresizingMaskIntoConstraints = false
-    gradientView.translatesAutoresizingMaskIntoConstraints = false
-    completeImgView.translatesAutoresizingMaskIntoConstraints = false
-    
-    categoryName.textColor = #colorLiteral(red: 0.4965081215, green: 0.5498962402, blue: 0.596957624, alpha: 1)
+  private func setupElements() {
+    setupGradienView()
+    setupTimeLabel()
+    setupDateLabel()
+
+    setupTaskTitle()
+    setupCategoryName()
+    setupCompleteImgView()
   }
   
   func configure(with task:Task) {
@@ -69,37 +67,55 @@ class TaskCell: UITableViewCell {
 }
 
 extension TaskCell {
-  func setupConstrains() {
+  private func setupGradienView() {
+    gradientView.translatesAutoresizingMaskIntoConstraints = false
     addSubview(gradientView)
-    addSubview(taskTitle)
-    addSubview(categoryName)
-    addSubview(dateLabel)
-    addSubview(timeLabel)
-    addSubview(completeImgView)
-    
-    let smallOffset = CGFloat(8)
-    let largeOffset = CGFloat(16)
     
     gradientView.trailingAnchor.constraint(equalTo: self.trailingAnchor).isActive = true
     gradientView.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
-    gradientView.widthAnchor.constraint(equalToConstant: smallOffset).isActive = true
+    gradientView.widthAnchor.constraint(equalToConstant: 8).isActive = true
     gradientView.heightAnchor.constraint(equalTo: self.heightAnchor).isActive = true
+  }
+  
+  private func setupTaskTitle() {
+    taskTitle.translatesAutoresizingMaskIntoConstraints = false
+    addSubview(taskTitle)
     
-    taskTitle.topAnchor.constraint(equalTo: topAnchor, constant: largeOffset).isActive = true
-    taskTitle.leadingAnchor.constraint(equalTo: dateLabel.trailingAnchor, constant: largeOffset).isActive = true
+    taskTitle.topAnchor.constraint(equalTo: topAnchor, constant: 16).isActive = true
+    taskTitle.leadingAnchor.constraint(equalTo: dateLabel.trailingAnchor, constant: 16).isActive = true
+  }
+  
+  private func setupCategoryName() {
+    categoryName.translatesAutoresizingMaskIntoConstraints = false
+    addSubview(categoryName)
     
-    categoryName.topAnchor.constraint(equalTo: taskTitle.bottomAnchor, constant: smallOffset).isActive = true
+    categoryName.topAnchor.constraint(equalTo: taskTitle.bottomAnchor, constant: 8).isActive = true
     categoryName.leadingAnchor.constraint(equalTo: taskTitle.leadingAnchor).isActive = true
+  }
+  
+  private func setupTimeLabel() {
+    timeLabel.translatesAutoresizingMaskIntoConstraints = false
+    addSubview(timeLabel)
     
-    timeLabel.topAnchor.constraint(equalTo: topAnchor, constant: largeOffset).isActive = true
-    timeLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: largeOffset).isActive = true
+    timeLabel.topAnchor.constraint(equalTo: topAnchor, constant: 16).isActive = true
+    timeLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 16).isActive = true
+  }
+  
+  private func setupDateLabel() {
+    dateLabel.translatesAutoresizingMaskIntoConstraints = false
+    addSubview(dateLabel)
     
-    dateLabel.topAnchor.constraint(equalTo: timeLabel.bottomAnchor, constant: smallOffset).isActive = true
-    dateLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: largeOffset).isActive = true
+    dateLabel.topAnchor.constraint(equalTo: timeLabel.bottomAnchor, constant: 8).isActive = true
+    dateLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 16).isActive = true
+  }
+  
+  private func setupCompleteImgView() {
+    completeImgView.translatesAutoresizingMaskIntoConstraints = false
+    addSubview(completeImgView)
     
     completeImgView.widthAnchor.constraint(equalToConstant: 30).isActive = true
     completeImgView.heightAnchor.constraint(equalToConstant: 30).isActive = true
     completeImgView.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
-    completeImgView.trailingAnchor.constraint(equalTo: gradientView.leadingAnchor, constant: -largeOffset).isActive = true
+    completeImgView.trailingAnchor.constraint(equalTo: gradientView.leadingAnchor, constant: -16).isActive = true
   }
 }

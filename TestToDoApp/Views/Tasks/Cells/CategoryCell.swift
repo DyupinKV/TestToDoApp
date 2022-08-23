@@ -4,25 +4,22 @@ import UIKit
 class CategoryCell:UICollectionViewCell {
   static var reuseIdentifier: String = "CategoryCell"
   
-  let gradientView = GradientView(from: .topLeading, to: .bottomTrailing, inColor: .clear, toColor: .clear)
-  let categoryTitle = UILabel()
+  private lazy var gradientView = GradientView(from: .topLeading, to: .bottomTrailing, inColor: .clear, toColor: .clear)
+  private lazy var categoryTitle = UILabel()
   
   override init(frame: CGRect) {
     super.init(frame: frame)
     backgroundColor = UIColor(white: 1, alpha: 1)
     
-    setupElements()
-    setupConstrains()
-    
     self.layer.cornerRadius = 4
     self.clipsToBounds = true
     
-    addSubview(categoryTitle)
+    setupElements()
   }
   
-  func setupElements() {
-    categoryTitle.translatesAutoresizingMaskIntoConstraints = false
-    gradientView.translatesAutoresizingMaskIntoConstraints = false
+  private func setupElements() {
+    setupCategoryTitle()
+    setupGradientView()
   }
   
   func configure(with category:String) {
@@ -46,17 +43,22 @@ class CategoryCell:UICollectionViewCell {
 }
 
 extension CategoryCell {
-  func setupConstrains() {
-    addSubview(gradientView)
+  private func setupCategoryTitle() {
+    categoryTitle.translatesAutoresizingMaskIntoConstraints = false
     addSubview(categoryTitle)
+    
+    categoryTitle.topAnchor.constraint(equalTo: topAnchor, constant: 16).isActive = true
+    categoryTitle.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 16).isActive = true
+    categoryTitle.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: 16).isActive = true
+  }
+  
+  private func setupGradientView() {
+    gradientView.translatesAutoresizingMaskIntoConstraints = false
+    addSubview(gradientView)
     
     gradientView.trailingAnchor.constraint(equalTo: self.trailingAnchor).isActive = true
     gradientView.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
     gradientView.widthAnchor.constraint(equalTo: self.widthAnchor).isActive = true
     gradientView.heightAnchor.constraint(equalToConstant: 8).isActive = true
-    
-    categoryTitle.topAnchor.constraint(equalTo: topAnchor, constant: 16).isActive = true
-    categoryTitle.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 16).isActive = true
-    categoryTitle.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: 16).isActive = true
   }
 }
