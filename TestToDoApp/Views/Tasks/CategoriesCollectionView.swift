@@ -2,8 +2,17 @@ import Foundation
 import UIKit
 
 final class CategoriesCollectionView: UICollectionView {
-  private lazy var categories:[String] = []
-  private lazy var vm = ToDoViewModel()
+  lazy var categories:[String] = [] {
+    didSet {
+      self.reloadData()
+    }
+  }
+  var pickCategory: ((String) -> ())?
+  lazy var pickedCategory = "" {
+    didSet {
+      self.reloadData()
+    }
+  }
   
   override init(frame: CGRect, collectionViewLayout layout: UICollectionViewLayout) {
     super.init(frame: frame, collectionViewLayout: layout)
@@ -12,21 +21,18 @@ final class CategoriesCollectionView: UICollectionView {
     register( CategoryCell.self, forCellWithReuseIdentifier: CategoryCell.reuseIdentifier)
     backgroundColor = UIColor.white
     
-    
-    vm.categories.insert("All categories", at: 0)
-    self.categories = vm.categories
-    
     dataSource = self
     delegate = self
     
-    translatesAutoresizingMaskIntoConstraints = false
-    heightAnchor.constraint(equalToConstant: 76).isActive = true
+    self.snp.makeConstraints { make in
+      make.height.equalTo(76)
+    }
   }
   
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
-    
+  
   private func createCategoryLayout() -> UICollectionViewFlowLayout {
     let layout = UICollectionViewFlowLayout()
     layout.scrollDirection = .horizontal
@@ -41,9 +47,7 @@ final class CategoriesCollectionView: UICollectionView {
 
 extension CategoriesCollectionView: UICollectionViewDelegate {
   func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-    let category = categories[indexPath.row]
-    vm.tapCategory(category: category)
-    collectionView.reloadData()
+    pickCategory?(categories[indexPath.row])
   }
 }
 
@@ -60,8 +64,7 @@ extension CategoriesCollectionView: UICollectionViewDataSource {
     ) as? CategoryCell else {
       return UICollectionViewCell()
     }
-    let pickedCategory = vm.pickedCategory
-    let bgColor = (pickedCategory.isEmpty && category == "All categories") || pickedCategory == category ? .green : #colorLiteral(red: 0.9647058845, green: 0.9647058845, blue: 0.9647058845, alpha: 1)
+    let bgColor = (self.pickedCategory.isEmpty && category == "All categories") || self.pickedCategory == category ? .green : #colorLiteral(red: 0.9647058845, green: 0.9647058845, blue: 0.9647058845, alpha: 1)
     
     cell.backgroundColor = bgColor
     cell.configure(with: category)

@@ -4,8 +4,8 @@ import SnapKit
 class ToDoViewController: UIViewController {
   private lazy var categoriesCollectionView = CategoriesCollectionView(frame: .zero, collectionViewLayout: CategoriesCollectionViewLayout())
   lazy var taskTableView = TasksTableView()
-//  private lazy var vm = ToDoViewModel()
-
+  private lazy var vm = ToDoViewModel()
+  
   private lazy var addTaskButton: UIButton = {
     let addTaskButton = UIButton(type: .system)
     
@@ -44,8 +44,33 @@ class ToDoViewController: UIViewController {
     setupViews()
     addStackView()
     setupCategoriesTitle()
+    vm.delegate = self
+    vm.getData()
     
-//    vm.delegate = self
+    setupCategoriesView()
+    setupTasksView()
+  }
+  
+  private func setupCategoriesView() {
+    vm.categories.insert("All categories", at: 0)
+    categoriesCollectionView.categories = vm.categories
+    
+    categoriesCollectionView.pickCategory = { [weak self] category in
+      self?.vm.tapCategory(category: category)
+      self?.categoriesCollectionView.pickedCategory = self?.vm.pickedCategory ?? ""
+    }
+  }
+  
+  private func setupTasksView() {
+    taskTableView.tasks = vm.data
+    
+    taskTableView.taskComplete = { [weak self] taskIndexPath in
+      self?.vm.tapTaskForComplete(taskIndex: taskIndexPath)
+    }
+    
+    taskTableView.taskDelete = { [weak self] taskIndexPath in
+      self?.vm.delete(taskIndex: taskIndexPath)
+    }
   }
   
   private func setupViews() {
@@ -72,19 +97,27 @@ class ToDoViewController: UIViewController {
     stackView.distribution = .fill
     stackView.alignment = .fill
     stackView.spacing = 10
-    stackView.translatesAutoresizingMaskIntoConstraints = false
     
     view.addSubview(stackView)
     
-    stackView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-    stackView.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
-    stackView.widthAnchor.constraint(equalTo: view.widthAnchor).isActive = true
-    stackView.heightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.heightAnchor).isActive = true
-    stackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
+    stackView.snp.makeConstraints { make in
+      make.left.right.equalToSuperview()
+      make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
+      make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
+      make.centerY.equalTo(view.snp.centerY)
+    }
   }
   
   @objc private func didTapAddTaskButton() {
     let createNewTaskVC = CreateNewTaskViewController()
     navigationController?.pushViewController(createNewTaskVC, animated: true)
+  }
+}
+
+extension ToDoViewController: ToDoViewModelDelegate {
+  func updatedInfo() {
+    DispatchQueue.main.async { [self] in
+      taskTableView.tasks = vm.data
+    }
   }
 }

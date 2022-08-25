@@ -14,7 +14,6 @@ final class ToDoViewModel {
   weak var delegate: ToDoViewModelDelegate?
   var data: [Task] = [] {
     didSet {
-      print("DidSet")
       delegate?.updatedInfo()
     }
   }
@@ -37,9 +36,9 @@ final class ToDoViewModel {
     }
   }
   
-  func tapTaskForComplete(taskIndex: Int, newCompletedStatus: Bool) {
+  func tapTaskForComplete(taskIndex: Int) {
     let task = data[taskIndex]
-    let dictionary = ["completed": newCompletedStatus]
+    let dictionary = ["completed": !task.completed]
     realmManager.update(task, with: dictionary)
     getData()
   }

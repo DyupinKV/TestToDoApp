@@ -2,8 +2,14 @@ import Foundation
 import UIKit
 
 final class TasksTableView: UITableView {
-  private lazy var vm = ToDoViewModel()
-  private lazy var tasks:[Task] = []
+  lazy var tasks:[Task] = [] {
+    didSet {
+      self.reloadData()
+    }
+  }
+  
+  var taskComplete: ((Int) -> ())?
+  var taskDelete: ((Int) -> ())?
   
   private let emptyTasksLabel: UILabel = {
     let emptyTasksLabel = UILabel()
@@ -17,9 +23,6 @@ final class TasksTableView: UITableView {
   override init(frame: CGRect, style: UITableView.Style) {
     super.init(frame: frame, style: style)
     
-    vm.delegate = self
-    vm.getData()
-    
     setLayout()
   }
   
@@ -30,9 +33,10 @@ final class TasksTableView: UITableView {
   private func setLayout() {
     self.backgroundColor = .clear
     setTable()
+    setupEmptyTasksLabel()
   }
   
-  func setTable() {
+  private func setTable() {
     register(TasksHeader.self, forHeaderFooterViewReuseIdentifier: TasksHeader.reuseIdentifier)
     register(TaskCell.self, forCellReuseIdentifier: TaskCell.reuseIdentifier)
     autoresizingMask = [.flexibleWidth, .flexibleHeight]
@@ -42,25 +46,23 @@ final class TasksTableView: UITableView {
     dataSource = self
     delegate = self
     
-    addSubview(emptyTasksLabel)
   }
-  
   
   private func setupEmptyTasksLabel() {
-    emptyTasksLabel.translatesAutoresizingMaskIntoConstraints = false
-    emptyTasksLabel.widthAnchor.constraint(equalTo: self.widthAnchor, constant: -32).isActive = true
-    emptyTasksLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 60).isActive = true
-    emptyTasksLabel.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 16).isActive = true
-  }
-  
-  public func fire () {
-    print("sadad FIRE FIRE FIRE")
+    addSubview(emptyTasksLabel)
+    
+    emptyTasksLabel.snp.makeConstraints { make in
+      make.width.equalTo(self.snp.width)
+      make.height.equalTo(90)
+      make.top.equalTo(self.snp.top).offset(50)
+      make.left.equalTo(self.snp.left).offset(16)
+    }
   }
 }
 
 extension TasksTableView: UITableViewDataSource {
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    let task = tasks[indexPath.row]
+    let task = self.tasks[indexPath.row]
     
     guard let cell = tableView.dequeueReusableCell(
       withIdentifier: TaskCell.reuseIdentifier,
@@ -91,8 +93,7 @@ extension TasksTableView: UITableViewDataSource {
 
 extension TasksTableView: UITableViewDelegate {
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-    let task = tasks[indexPath.row]
-    vm.tapTaskForComplete(taskIndex: indexPath.row, newCompletedStatus: !task.completed )
+    taskComplete?(indexPath.row)
   }
   
   func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
@@ -106,16 +107,6 @@ extension TasksTableView: UITableViewDelegate {
   
   func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
     guard editingStyle == .delete else { return }
-    vm.delete(taskIndex: indexPath.row)
-  }
-}
-
-extension TasksTableView: ToDoViewModelDelegate {
-  func updatedInfo() {
-    print("FASDSAIJGIFGIJOS")
-    DispatchQueue.main.async { [self] in
-      self.tasks = vm.data
-      self.reloadData()
-    }
+    taskDelete?(indexPath.row)
   }
 }

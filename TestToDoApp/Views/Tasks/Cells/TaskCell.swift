@@ -33,7 +33,6 @@ class TaskCell: UITableViewCell {
     setupGradienView()
     setupTimeLabel()
     setupDateLabel()
-
     setupTaskTitle()
     setupCategoryName()
     setupCompleteImgView()
@@ -68,54 +67,58 @@ class TaskCell: UITableViewCell {
 
 extension TaskCell {
   private func setupGradienView() {
-    gradientView.translatesAutoresizingMaskIntoConstraints = false
     addSubview(gradientView)
     
-    gradientView.trailingAnchor.constraint(equalTo: self.trailingAnchor).isActive = true
-    gradientView.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
-    gradientView.widthAnchor.constraint(equalToConstant: 8).isActive = true
-    gradientView.heightAnchor.constraint(equalTo: self.heightAnchor).isActive = true
-  }
-  
-  private func setupTaskTitle() {
-    taskTitle.translatesAutoresizingMaskIntoConstraints = false
-    addSubview(taskTitle)
-    
-    taskTitle.topAnchor.constraint(equalTo: topAnchor, constant: 16).isActive = true
-    taskTitle.leadingAnchor.constraint(equalTo: dateLabel.trailingAnchor, constant: 16).isActive = true
-  }
-  
-  private func setupCategoryName() {
-    categoryName.translatesAutoresizingMaskIntoConstraints = false
-    addSubview(categoryName)
-    
-    categoryName.topAnchor.constraint(equalTo: taskTitle.bottomAnchor, constant: 8).isActive = true
-    categoryName.leadingAnchor.constraint(equalTo: taskTitle.leadingAnchor).isActive = true
+    gradientView.snp.makeConstraints { make in
+      make.trailing.equalTo(self.snp.trailing)
+      make.height.equalTo(self.snp.width)
+      make.width.equalTo(8)
+    }
   }
   
   private func setupTimeLabel() {
-    timeLabel.translatesAutoresizingMaskIntoConstraints = false
     addSubview(timeLabel)
     
-    timeLabel.topAnchor.constraint(equalTo: topAnchor, constant: 16).isActive = true
-    timeLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 16).isActive = true
+    timeLabel.snp.makeConstraints { make in
+      make.top.equalTo(self.snp.top).offset(16)
+      make.leading.equalTo(self.snp.leading).offset(16)
+    }
   }
   
   private func setupDateLabel() {
-    dateLabel.translatesAutoresizingMaskIntoConstraints = false
     addSubview(dateLabel)
     
-    dateLabel.topAnchor.constraint(equalTo: timeLabel.bottomAnchor, constant: 8).isActive = true
-    dateLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 16).isActive = true
+    dateLabel.snp.makeConstraints { make in
+      make.top.equalTo(timeLabel.snp.bottom).offset(8)
+      make.leading.equalTo(self.snp.leading).offset(16)
+    }
+  }
+  
+  private func setupTaskTitle() {
+    addSubview(taskTitle)
+    
+    taskTitle.snp.makeConstraints { make in
+      make.top.equalTo(self.snp.top).offset(16)
+      make.leading.equalTo(dateLabel.snp.trailing).offset(16)
+    }
+  }
+  
+  private func setupCategoryName() {
+    addSubview(categoryName)
+    
+    categoryName.snp.makeConstraints { make in
+      make.top.equalTo(taskTitle.snp.bottom).offset(8)
+      make.leading.equalTo(taskTitle.snp.leading)
+    }
   }
   
   private func setupCompleteImgView() {
-    completeImgView.translatesAutoresizingMaskIntoConstraints = false
     addSubview(completeImgView)
     
-    completeImgView.widthAnchor.constraint(equalToConstant: 30).isActive = true
-    completeImgView.heightAnchor.constraint(equalToConstant: 30).isActive = true
-    completeImgView.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
-    completeImgView.trailingAnchor.constraint(equalTo: gradientView.leadingAnchor, constant: -16).isActive = true
+    completeImgView.snp.makeConstraints { make in
+      make.width.height.equalTo(30)
+      make.centerY.equalTo(self.snp.centerY)
+      make.trailing.equalTo(gradientView.snp.leading).offset(-16)
+    }
   }
 }

@@ -24,6 +24,7 @@
 		4168629C28B54C3200DB6E46 /* CategoriesCollectionViewLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4168629B28B54C3200DB6E46 /* CategoriesCollectionViewLayout.swift */; };
 		416C12B728898B6C00A1CA3F /* ToDoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 416C12B628898B6C00A1CA3F /* ToDoViewModel.swift */; };
 		41D381D928A410700044A8E9 /* TasksHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41D381D828A410700044A8E9 /* TasksHeader.swift */; };
+		41F43D6528B69FE5004D68E4 /* CreateNewTaskViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41F43D6428B69FE5004D68E4 /* CreateNewTaskViewModel.swift */; };
 		41F4BE3828870F52000E3A13 /* CategoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41F4BE3728870F52000E3A13 /* CategoryCell.swift */; };
 		7E69A2C574CE40DBFDF72779 /* Pods_TestToDoApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DFD011518E64B59E23765D4B /* Pods_TestToDoApp.framework */; };
 /* End PBXBuildFile section */
@@ -69,6 +70,7 @@
 		4168629B28B54C3200DB6E46 /* CategoriesCollectionViewLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoriesCollectionViewLayout.swift; sourceTree = "<group>"; };
 		416C12B628898B6C00A1CA3F /* ToDoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToDoViewModel.swift; sourceTree = "<group>"; };
 		41D381D828A410700044A8E9 /* TasksHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TasksHeader.swift; sourceTree = "<group>"; };
+		41F43D6428B69FE5004D68E4 /* CreateNewTaskViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateNewTaskViewModel.swift; sourceTree = "<group>"; };
 		41F4BE3728870F52000E3A13 /* CategoryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryCell.swift; sourceTree = "<group>"; };
 		DFD011518E64B59E23765D4B /* Pods_TestToDoApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TestToDoApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -149,6 +151,7 @@
 			isa = PBXGroup;
 			children = (
 				416C12B628898B6C00A1CA3F /* ToDoViewModel.swift */,
+				41F43D6428B69FE5004D68E4 /* CreateNewTaskViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -397,6 +400,7 @@
 				413F714E28749F9A006144A3 /* ToDoViewController.swift in Sources */,
 				413F715A287600CF006144A3 /* RealmManager.swift in Sources */,
 				413F7168287F2A79006144A3 /* TaskCell.swift in Sources */,
+				41F43D6528B69FE5004D68E4 /* CreateNewTaskViewModel.swift in Sources */,
 				4168629C28B54C3200DB6E46 /* CategoriesCollectionViewLayout.swift in Sources */,
 				413F711728704636006144A3 /* AppDelegate.swift in Sources */,
 				413F7161287CA0D5006144A3 /* Categories.swift in Sources */,

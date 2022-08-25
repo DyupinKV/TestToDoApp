@@ -1,5 +1,6 @@
 import Foundation
 import UIKit
+import SnapKit
 
 class TasksHeader: UITableViewHeaderFooterView {
   static let reuseIdentifier: String = "TaskHeader"
@@ -18,15 +19,10 @@ class TasksHeader: UITableViewHeaderFooterView {
     title.textColor = .black
     title.font = UIFont.systemFont(ofSize: 20)
     
-    title.translatesAutoresizingMaskIntoConstraints = false
-    
     contentView.addSubview(title)
     
-    NSLayoutConstraint.activate([
-      title.topAnchor.constraint(equalTo: topAnchor),
-      title.leadingAnchor.constraint(equalTo: leadingAnchor),
-      title.trailingAnchor.constraint(equalTo: trailingAnchor),
-      title.bottomAnchor.constraint(equalTo: bottomAnchor)
-    ])
+    title.snp.makeConstraints { make in
+      make.top.left.right.bottom.equalToSuperview()
+    }
   }
 }

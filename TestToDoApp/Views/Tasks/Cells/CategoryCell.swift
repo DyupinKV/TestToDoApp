@@ -44,21 +44,22 @@ class CategoryCell:UICollectionViewCell {
 
 extension CategoryCell {
   private func setupCategoryTitle() {
-    categoryTitle.translatesAutoresizingMaskIntoConstraints = false
     addSubview(categoryTitle)
     
-    categoryTitle.topAnchor.constraint(equalTo: topAnchor, constant: 16).isActive = true
-    categoryTitle.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 16).isActive = true
-    categoryTitle.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: 16).isActive = true
+    categoryTitle.snp.makeConstraints { make in
+      make.top.equalTo(16)
+      make.leading.equalTo(self.snp.leading).offset(8)
+    }
   }
   
   private func setupGradientView() {
-    gradientView.translatesAutoresizingMaskIntoConstraints = false
     addSubview(gradientView)
     
-    gradientView.trailingAnchor.constraint(equalTo: self.trailingAnchor).isActive = true
-    gradientView.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
-    gradientView.widthAnchor.constraint(equalTo: self.widthAnchor).isActive = true
-    gradientView.heightAnchor.constraint(equalToConstant: 8).isActive = true
+    gradientView.snp.makeConstraints { make in
+      make.trailing.equalTo(self.snp.trailing)
+      make.bottom.equalTo(self.snp.bottom)
+      make.width.equalTo(self.snp.width)
+      make.height.equalTo(8)
+    }
   }
 }

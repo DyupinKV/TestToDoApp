@@ -1,6 +1,8 @@
 import UIKit
+import SnapKit
 
 final class CreateNewTaskViewController: UIViewController {
+  private lazy var vm = CreateNewTaskViewModel()
   
   private func createNewLabel(text: String = "", fontSize: CGFloat = 20, textColor: UIColor = .black) -> UILabel {
     let label = UILabel()
@@ -74,16 +76,11 @@ final class CreateNewTaskViewController: UIViewController {
     
     navigationItem.title = "Creating new task"
     
+    setupStackView()
     setupElements()
-    addConstraints()
-    addCategoriesPickerView()
   }
   
-  private func setupElements() {
-    titleInput.translatesAutoresizingMaskIntoConstraints = false
-    stackView.translatesAutoresizingMaskIntoConstraints = false
-    
-    
+  private func setupStackView() {
     stackView.addArrangedSubview(titleLabel)
     stackView.addArrangedSubview(titleInput)
     stackView.addArrangedSubview(dateLabel)
@@ -91,25 +88,33 @@ final class CreateNewTaskViewController: UIViewController {
     stackView.addArrangedSubview(categoriesTextView)
     stackView.addArrangedSubview(warningLabel)
     stackView.addArrangedSubview(taskCreateButton)
+    
+    view.addSubview(stackView)
+    stackView.snp.makeConstraints { make in
+      make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
+      make.centerX.equalTo(view.snp.centerX)
+    }
   }
   
-  private func addConstraints() {
-    view.addSubview(stackView)
-    
+  private func setupElements() {
     let offset = CGFloat(40)
+
+    addCategoriesPickerView()
     
-    stackView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-    stackView.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
-    stackView.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -offset).isActive = true
+    titleInput.snp.makeConstraints { make in
+      make.height.equalTo(offset)
+      make.width.equalTo(view.snp.width).offset(-offset)
+    }
     
-    titleInput.heightAnchor.constraint(equalToConstant: offset).isActive = true
-    titleInput.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -offset).isActive = true
-    
-    categoriesTextView.heightAnchor.constraint(equalToConstant: offset).isActive = true
-    categoriesTextView.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -offset).isActive = true
     categoriesTextView.delegate = self
+    categoriesTextView.snp.makeConstraints { make in
+      make.height.equalTo(offset)
+      make.width.equalTo(view.snp.width).offset(-offset)
+    }
     
-    warningLabel.heightAnchor.constraint(equalToConstant: 20).isActive = true
+    warningLabel.snp.makeConstraints { make in
+      make.height.equalTo(offset / 2)
+    }
   }
   
   @objc func didTapCreateButton() {
@@ -132,7 +137,7 @@ final class CreateNewTaskViewController: UIViewController {
   
   private func createTask(_ title: String, _ category: String) {
     let newTask = Task(value: ["title": title, "category": category, "date": datePicker.date, "completed": false])
-    realmManager.add(obj: newTask)
+    vm.add(newTask: newTask)
     
     let toDoVC = ToDoViewController()
     navigationController?.pushViewController(toDoVC, animated: true)
@@ -188,7 +193,7 @@ extension CreateNewTaskViewController: UIPickerViewDataSource {
   }
 }
 
-extension CreateNewTaskViewController: UITextFieldDelegate{
+extension CreateNewTaskViewController: UITextFieldDelegate {
   func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
     false
   }
